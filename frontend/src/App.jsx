@@ -9,6 +9,7 @@ import Orders from '../pages/Orders';
 
 export default function App() {
   return (
+    
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
@@ -18,5 +19,6 @@ export default function App() {
         <Route path="/orders" element={<Orders />} />
       </Routes>
     </Router>
+    
   );
 }
