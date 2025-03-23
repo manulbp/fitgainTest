@@ -9,6 +9,8 @@ const Product = () => {
     productname: '',
     description: '',
     category: '',
+    condition:'',
+    quantity:'',
     price: '',
     guidance: '',
     image: null,
@@ -41,7 +43,7 @@ const Product = () => {
     setLoading(true);
     setErrorMessage(null);
 
-    if (!formData.productname || !formData.description || !formData.category || !formData.price) {
+    if (!formData.productname || !formData.description || !formData.category || !formData.quantity || !formData.price) {
       setErrorMessage("All required fields must be filled");
       setLoading(false);
       return;
@@ -51,6 +53,8 @@ const Product = () => {
       productname: formData.productname,
       description: formData.description,
       category: formData.category,
+      condition: formData.condition,
+      quantity: parseInt(formData.quantity),
       price: parseFloat(formData.price),
       guidance: formData.guidance,
     };
@@ -76,6 +80,8 @@ const Product = () => {
         productname: '', 
         description: '', 
         category: '', 
+        condition: '',
+        quantity:'',
         price: '', 
         guidance: '', 
       
@@ -89,23 +95,30 @@ const Product = () => {
   };
 
   return (
-    <div className="add">
-      <form className="flex-col" onSubmit={handleSubmit}>
-        <div className="add-img-upload flex-col">
-          <p>Upload image:</p>
-          <input type="file" id="image" onChange={handleFileChange} />
-          {formData.imagePreview && <img src={formData.imagePreview} alt="Preview" width="100" />}
-        </div>
+    <div className="max-w-lg mx-auto p-8 bg-gray-50 rounded-md shadow-sm">
+      <h1 className="text-xl text-gray-600 font-medium text-center mb-6">Add a New Product</h1>
+      <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+      <div className="flex flex-col gap-1 w-full">
+        <p className="text-sm text-gray-650 text-left mb-1">Product Image:</p>
+        <input 
+          type="file" 
+          id="image" 
+          onChange={handleFileChange} 
+          className="w-full border border-gray-300 bg-white rounded px-3 py-2 text-sm file:mr-4 file:py-1 file:px-3 file:rounded file:border-0 file:text-sm file:bg-gray-100 file:text-gray-700"
+        />
+        {formData.imagePreview && <img src={formData.imagePreview} alt="Preview" width="100" className="mt-2" />}
+      </div>
 
         <div className="add-product-name flex-col">
           <p>Product name:</p>
           <input 
             type="text" 
             name="productname" 
-            placeholder="Enter" 
+            placeholder="Enter product name" 
             value={formData.productname} 
             onChange={handleChange} 
             required 
+            className='w-full border border-gray-300 bg-white rounded px-3 py-2 text-sm focus:outline-none focus:border-gray-400'
           />
         </div>
 
@@ -118,10 +131,11 @@ const Product = () => {
             value={formData.description} 
             onChange={handleChange} 
             required
+            className='w-full border border-gray-300 bg-white rounded px-3 py-2 text-sm focus:outline-none focus:border-gray-400'
           ></textarea>
         </div>
 
-        <div className="add-product-category">
+        
           <div className="add-category flex-col">
             <p>Product category:</p>
             <select 
@@ -129,6 +143,7 @@ const Product = () => {
               value={formData.category} 
               onChange={handleChange} 
               required
+              className='w-full border border-gray-300 bg-white rounded px-3 py-2 text-sm focus:outline-none focus:border-gray-400'
             >
               <option value="">Select</option>
               <option value="a">A</option>
@@ -139,6 +154,36 @@ const Product = () => {
             </select>
           </div>
 
+          <div className="add-product-condition">
+          <div className="add-condition flex-col">
+            <p>Product condition:</p>
+            <select 
+              name="condition" 
+              value={formData.condition} 
+              onChange={handleChange} 
+              required
+              className='w-full border border-gray-300 bg-white rounded px-3 py-2 text-sm focus:outline-none focus:border-gray-400'
+            >
+              <option value="">Select</option>
+              <option value="New">Brand-new</option>
+              <option value="Used">Secondhand</option>
+              </select>
+          </div>
+
+          <div className="add-count flex-col">
+            <p>Inventory level:</p>
+            <input 
+              type="number" 
+              name="quantity" 
+              value={formData.quantity} 
+              onChange={handleChange} 
+              required 
+              className='w-full border border-gray-300 bg-white rounded px-3 py-2 text-sm focus:outline-none focus:border-gray-400'
+            />
+          </div>
+          
+          
+
           <div className="add-price flex-col">
             <p>Product price:</p>
             <input 
@@ -147,25 +192,31 @@ const Product = () => {
               value={formData.price} 
               onChange={handleChange} 
               required 
+              className='w-full border border-gray-300 bg-white rounded px-3 py-2 text-sm focus:outline-none focus:border-gray-400'
             />
           </div>
         </div>
 
         <div className="add-nutritional-guidance flex-col">
-          <p>Nutritional guidance:</p>
+          <p>Nutritional guidance(regarding supplements):</p>
           <textarea 
             name="guidance" 
             rows="6" 
             placeholder="Type here" 
             value={formData.guidance} 
             onChange={handleChange}
+            className='w-full border border-gray-300 bg-white rounded px-3 py-2 text-sm focus:outline-none focus:border-gray-400'
           ></textarea>
         </div>
 
         {errorMessage && <p className="error">{errorMessage}</p>}
-        <button type="submit" className="add-btn" disabled={loading}>
-          {loading ? "Adding..." : "ADD"}
-        </button>
+        <button 
+        type="submit" 
+        className="w-full bg-black text-white py-2 px-4 rounded hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed text-center mt-4"
+        disabled={loading}
+      >
+        {loading ? "Adding..." : "Add Product"}
+      </button>
       </form>
     </div>
   );

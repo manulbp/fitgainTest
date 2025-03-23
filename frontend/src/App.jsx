@@ -7,6 +7,8 @@ import ContactUs from '../pages/ContactUs';
 import Orders from '../pages/Orders';
 import Header from '../component/Header';
 import Product from '../pages/Product';
+import Footer from '../component/Footer';
+
 
 export default function App() {
   return (
@@ -21,7 +23,9 @@ export default function App() {
         <Route path="/contact" element={<ContactUs />} />
         <Route path="/orders" element={<Orders />} />
       </Routes>
-    </Router>
+      <Footer/> 
+      {/*footer*/}
+      </Router>
     
   );
 }

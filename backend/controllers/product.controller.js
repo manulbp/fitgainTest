@@ -14,14 +14,14 @@ export const test = (req, res) => {
 //Data insertion
 
 export const addproducts = async (req, res) => {
-    const { productname, description, category, price, guidance } = req.body;
+    const { productname, description, category,condition, quantity, price, guidance } = req.body;
   
-    if (!productname || !description || !category || !price) {
+    if (!productname || !description || !category || !quantity || !price) {
       return res.status(400).json({ message: "All required fields must be filled" });
     }
   
     try {
-      const product = new Product({ productname, description, category, price, guidance });
+      const product = new Product({ productname, description, category,condition, quantity, price, guidance });
       await product.save();
       return res.status(201).json({ success: true, message: "Product added successfully", product });
     } catch (err) {
@@ -65,14 +65,14 @@ export const updateProduct = async(req,res,next) => {
 
     const pid = req.params.pid;
 
-    const {productname, description, category, price, guidance} = req.body;
+    const {productname, description, category, condition, quantity, price, guidance} = req.body;
 
     let productu;
 
     try{
         productu = await Product.findByIdAndUpdate(pid,
 
-        {productname:productname, description:description, category:category, price:price, guidance:guidance});
+        {productname:productname, description:description, category:category, condition:condition, quantity:quantity, price:price, guidance:guidance});
 
         productu = await productu.save();
 
