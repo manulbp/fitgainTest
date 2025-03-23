@@ -8,7 +8,7 @@ export default function Header() {
       <h1 className='font-bold'>Fit-gain</h1>
       <ul className='flex gap-4'>
         <li><Link to="/">Home</Link></li>
-        <li><Link to="/products">Products</Link></li>
+        <li><Link to="/product">Products</Link></li>
         <li><Link to="/orders">Orders</Link></li>
         <li><Link to="/contact">Contact Us</Link></li>
       </ul>
