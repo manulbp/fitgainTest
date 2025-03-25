@@ -79,7 +79,10 @@ export default function Header() {
 
       if (user.email === 'adminmail@gmail.com') {
         navigate('/admindashboard');
+      }else{
+        navigate('/');
       }
+
       console.log(res);
       setopenlogin(false);
       window.location.reload();
