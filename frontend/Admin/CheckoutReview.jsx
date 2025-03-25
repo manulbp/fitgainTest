@@ -149,7 +149,7 @@ const CheckoutReview = () => {
                         {searchCheckouts.slice().reverse().map((checkout) => (
                             <TableRow key={checkout._id}>
                                 <TableCell>{checkout.fname}</TableCell>
-                                <TableCell>Rs {checkout.lname}</TableCell>
+                                <TableCell> {checkout.lname}</TableCell>
                                 <TableCell><a href={`mailto:${checkout.userMail}`}>{checkout.userMail}</a></TableCell>
                                 <TableCell><a href={`tel:${checkout.mobile}`}>{checkout.mobile}</a></TableCell>
                                 <TableCell>{checkout.total} LKR</TableCell>
