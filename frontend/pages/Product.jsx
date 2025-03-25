@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './Product.css';
+import { Link } from 'react-router-dom';
 
 const Product = () => {
   const [errorMessage, setErrorMessage] = useState(null);
@@ -49,6 +50,13 @@ const Product = () => {
       return;
     }
 
+    //Price validation section
+      if (parseFloat(formData.price) <= 0) {
+      setErrorMessage("Product price must be a positive number");
+      setLoading(false);
+      return;
+    }
+
     const productData = {
       productname: formData.productname,
       description: formData.description,
@@ -94,12 +102,13 @@ const Product = () => {
     }
   };
 
-  return (
-    <div className="max-w-lg mx-auto p-8 bg-gray-50 rounded-md shadow-sm">
-      <h1 className="text-xl text-gray-600 font-medium text-center mb-6">Add a New Product</h1>
+ 
+return (
+    <div className="max-w-lg mx-auto p-8 bg-gray-200 rounded-md shadow-sm mt-8">
+      <h1 className="text-xl text-gray-600 font-medium text-center mb-6" >Add a New Product</h1>
       <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
       <div className="flex flex-col gap-1 w-full">
-        <p className="text-sm text-gray-650 text-left mb-1">Product Image:</p>
+        <p className="text-sm text-gray-650 text-left mb-1 mt-0.5">Product Image:</p>
         <input 
           type="file" 
           id="image" 
@@ -109,7 +118,7 @@ const Product = () => {
         {formData.imagePreview && <img src={formData.imagePreview} alt="Preview" width="100" className="mt-2" />}
       </div>
 
-        <div className="add-product-name flex-col">
+        <div className="add-product-name flex-col mt-5">
           <p>Product name:</p>
           <input 
             type="text" 
@@ -122,7 +131,7 @@ const Product = () => {
           />
         </div>
 
-        <div className="add-product-description flex-col">
+        <div className="add-product-description flex-col mt-5">
           <p>Product description:</p>
           <textarea 
             name="description" 
@@ -136,7 +145,7 @@ const Product = () => {
         </div>
 
         
-          <div className="add-category flex-col">
+          <div className="add-category flex-col mt-5">
             <p>Product category:</p>
             <select 
               name="category" 
@@ -146,23 +155,20 @@ const Product = () => {
               className='w-full border border-gray-300 bg-white rounded px-3 py-2 text-sm focus:outline-none focus:border-gray-400'
             >
               <option value="">Select</option>
-              <option value="a">A</option>
-              <option value="b">B</option>
-              <option value="c">C</option>
-              <option value="d">D</option>
-              <option value="e">E</option>
-            </select>
+              <option value="equipment">Equipment</option>
+              <option value="nutrient">Supplement</option>
+              </select>
           </div>
 
           <div className="add-product-condition">
-          <div className="add-condition flex-col">
+          <div className="add-condition flex-col mt-5">
             <p>Product condition:</p>
             <select 
               name="condition" 
               value={formData.condition} 
               onChange={handleChange} 
               required
-              className='w-full border border-gray-300 bg-white rounded px-3 py-2 text-sm focus:outline-none focus:border-gray-400'
+              className='w-full border border-gray-300 bg-white rounded px-3 py-2 text-sm focus:outline-none focus:border-gray-400 '
             >
               <option value="">Select</option>
               <option value="New">Brand-new</option>
@@ -170,7 +176,7 @@ const Product = () => {
               </select>
           </div>
 
-          <div className="add-count flex-col">
+          <div className="add-count flex-col mt-5">
             <p>Inventory level:</p>
             <input 
               type="number" 
@@ -178,13 +184,14 @@ const Product = () => {
               value={formData.quantity} 
               onChange={handleChange} 
               required 
+              min="1"
               className='w-full border border-gray-300 bg-white rounded px-3 py-2 text-sm focus:outline-none focus:border-gray-400'
             />
           </div>
           
           
 
-          <div className="add-price flex-col">
+          <div className="add-price flex-col mt-5">
             <p>Product price:</p>
             <input 
               type="number" 
@@ -197,7 +204,7 @@ const Product = () => {
           </div>
         </div>
 
-        <div className="add-nutritional-guidance flex-col">
+        <div className="add-nutritional-guidance flex-col mt-5">
           <p>Nutritional guidance(regarding supplements):</p>
           <textarea 
             name="guidance" 
@@ -210,13 +217,15 @@ const Product = () => {
         </div>
 
         {errorMessage && <p className="error">{errorMessage}</p>}
+        
         <button 
         type="submit" 
-        className="w-full bg-black text-white py-2 px-4 rounded hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed text-center mt-4"
+        className="w-full bg-blue-300 text-black py-2 px-4 rounded hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed text-center mt-4"
         disabled={loading}
       >
         {loading ? "Adding..." : "Add Product"}
       </button>
+      
       </form>
     </div>
   );

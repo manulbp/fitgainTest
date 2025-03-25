@@ -3,19 +3,45 @@ import { Link } from 'react-router-dom'
 
 export default function Header() {
   return (
-    <div className='bg-gray-300'>
-      <div className="flex justify-between items-center max-w-6xl mx-auto p-7">
-      <h1 className='font-bold'>Fit-gain</h1>
-      <ul className='flex gap-4'>
-        <li><Link to="/">Home</Link></li>
-        <li><Link to="/product">Products</Link></li>
-        <li><Link to="/orders">Orders</Link></li>
-        <li><Link to="/contact">Contact Us</Link></li>
-      </ul>
+    <header className="bg-gray-300 shadow-sm">
+      <div className="flex justify-between items-center max-w-6xl mx-auto p-4">
+        {/* Logo */}
+        <Link to="/" className="text-2xl font-bold text-gray-800">Fit-gain</Link>
+        
+        {/* Navigation */}
+        <nav className="hidden md:block">
+          <ul className="flex gap-6">
+            <li><Link to="/" className="text-gray-700 hover:text-gray-900">Home</Link></li>
+            <li><Link to="/product" className="text-gray-700 hover:text-gray-900">Products</Link></li>
+            <li><Link to="/orders" className="text-gray-700 hover:text-gray-900">Orders</Link></li>
+         
+            <li><Link to="/contact" className="text-gray-700 hover:text-gray-900">Contact Us</Link></li>
+          </ul>
+        </nav>
+        
+        {/* Right side icons and button */}
+        <div className="flex items-center gap-4">
+          {/* Search icon */}
+          <button className="p-2" aria-label="Search">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </button>
+          
+          {/* Cart icon */}
+          <Link to="/cart" className="p-2" aria-label="Cart">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+            </svg>
+          </Link>
+          
+          {/* Sign in button */}
+          <Link to="/signin" className="ml-2 px-4 py-1 border border-gray-400 rounded text-sm">
+            Sign in
+          </Link>
+        </div>
       </div>
-
-
-    </div>
+    </header>
   )
 }
 

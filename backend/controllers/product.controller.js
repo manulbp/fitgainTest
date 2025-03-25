@@ -1,123 +1,111 @@
 import Product from "../models/product.model.js";
-
+import mongoose from "mongoose";
 
 export const test = (req, res) => {
     res.json({
-        message:'API is working!',
-
+        message: "API is working!",
     });
-
-
-
 };
 
-//Data insertion
-
 export const addproducts = async (req, res) => {
-    const { productname, description, category,condition, quantity, price, guidance } = req.body;
+    const { productname, description, category, condition, quantity, price, guidance } = req.body;
   
     if (!productname || !description || !category || !quantity || !price) {
       return res.status(400).json({ message: "All required fields must be filled" });
     }
   
     try {
-      const product = new Product({ productname, description, category,condition, quantity, price, guidance });
+      const product = new Product({ 
+        productname, 
+        description, 
+        category, 
+        condition: condition || "New",  
+        quantity, 
+        price, 
+        guidance: guidance || "No guidance available"  
+      });
+      
       await product.save();
       return res.status(201).json({ success: true, message: "Product added successfully", product });
+      
     } catch (err) {
       console.error("Error adding product:", err);
       return res.status(500).json({ success: false, message: "Unable to add product", error: err.message });
     }
 };
 
+export const getbyId = async (req, res) => {
+    const { pid } = req.params;  
 
-//Get by id
-
-export const getbyId = async (req,res, next) => {
-
-    const pid = req.params.pid;
-
-    let product;
-
-    try{
-
-        product = await Product.findById(pid);
-
-
-
-    }catch(err){
-        console.log(err);
-
+    if (!mongoose.Types.ObjectId.isValid(pid)) {
+        return res.status(400).json({ message: "Invalid product ID format" });
     }
 
-    if(!product){
-        return res.status(404).json({message:"Product not found"});
-
-
-    }
-
-    return res.status(200).json({product});
-};
-
-// Update user details
-
-export const updateProduct = async(req,res,next) => {
-
-    const pid = req.params.pid;
-
-    const {productname, description, category, condition, quantity, price, guidance} = req.body;
-
-    let productu;
-
-    try{
-        productu = await Product.findByIdAndUpdate(pid,
-
-        {productname:productname, description:description, category:category, condition:condition, quantity:quantity, price:price, guidance:guidance});
-
-        productu = await productu.save();
-
-
-    }catch(err){
-
-        console.log(err);
-    }
-
-    if(!productu){
-        return res.status(404).json({message:"Unable to update product details"});
-
-
-    }
-
-    return res.status(200).json({productu});
-
-};
-
-//Delete product details
-
-export const deleteProduct = async(req,res,next) => {
-
-    const pid = req.params.pid;
-
-    let productd;
-
-    try{
-        productd = await Product.findByIdAndDelete(pid);
-
-
-    }catch(err){
-        console.log(err);
-
+    try {
+        const product = await Product.findById(pid);
+        if (!product) {
+            return res.status(404).json({ message: "Product not found" });
         }
 
-        if(!productd){
-            return res.status(404).json({message:"Unable to delete product details"});
-    
-    
+        return res.status(200).json({ product });
+    } catch (err) {
+        console.error("Error fetching product:", err);
+        return res.status(500).json({
+            message: "Server error",
+            error: err.message,
+        });
+    }
+};
+
+export const updateProduct = async (req, res) => {
+    const { pid } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(pid)) {
+        return res.status(400).json({ message: "Invalid product ID format" });
+    }
+
+    const { productname, description, category, condition, quantity, price, guidance } = req.body;
+
+    try {
+        const productu = await Product.findByIdAndUpdate(
+            pid,
+            { productname, description, category, condition, quantity, price, guidance },
+            { new: true }
+        );
+
+        if (!productu) {
+            return res.status(404).json({ message: "Product not found" });
         }
-    
-        return res.status(200).json({productd});
-    
+
+        return res.status(200).json({ product: productu });
+
+    } catch (err) {
+        console.error("Error updating product:", err);
+        return res.status(500).json({ message: "Server error", error: err.message });
+    }
+};
 
 
+export const deleteProduct = async (req, res) => {
+    const { pid } = req.params; // ✅ Correctly extract pid
 
-}
+    // ✅ Validate ObjectId
+    if (!mongoose.Types.ObjectId.isValid(pid)) {
+        return res.status(400).json({ message: "Invalid product ID" });
+    }
+
+    try {
+        const productd = await Product.findByIdAndDelete(pid);
+
+        if (!productd) {
+            return res.status(404).json({ message: "Product not found" });
+        }
+
+        return res.status(200).json({ message: "Product deleted successfully" });
+
+    } catch (err) {
+        console.error("Error deleting product:", err);
+        return res.status(500).json({ message: "Server error", error: err.message });
+    }
+};
+

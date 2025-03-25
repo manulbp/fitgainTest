@@ -3,6 +3,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import productRoutes from './routes/product.route.js'; 
 import authRoutes from './routes/auth.route.js';
+import cors from 'cors';
 
 dotenv.config(); 
 mongoose
@@ -18,10 +19,13 @@ const app = express();
 app.use(express.json());
 
 
+app.use(cors());
 
 
-app.listen(5050, () => {
-    console.log('Server listening on port 5050');
+
+
+app.listen(5060, () => {
+    console.log('Server listening on port 5060');
 });
 
 
