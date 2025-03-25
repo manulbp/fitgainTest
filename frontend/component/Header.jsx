@@ -29,6 +29,7 @@ export default function Header() {
   const user = JSON.parse(localStorage.getItem('user'));
   const userMail = user ? user.email : null;
 
+  //Signup form validation
   const validateSchema = Yup.object().shape({
     username: Yup.string().required('Username is required'),
     email: Yup.string()
@@ -43,7 +44,7 @@ export default function Header() {
       .oneOf([Yup.ref('password'), undefined], 'Passwords must match') // Validate password confirmation
       .required('Please re-type password'), // Added required validation
   });
-
+//Login form validation
   const validateSchema2 = Yup.object().shape({
     usernamel: Yup.string().required('Username is required'),
     passwordl: Yup.string()
@@ -63,6 +64,7 @@ export default function Header() {
 
   const navigate = useNavigate();
 
+  //Login function
   const checkUser = async (e) => {
     e.preventDefault();
 
@@ -74,6 +76,7 @@ export default function Header() {
       });
 
       const { token, user } = res;
+      //Save user and token
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user));
 
@@ -101,7 +104,7 @@ export default function Header() {
       }
     }
   }
-
+//Signup function
   const adduser = async () => {
     try {
       await validateSchema.validate({ username, email, password, confpassword }, { abortEarly: false });
