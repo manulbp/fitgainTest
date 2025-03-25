@@ -12,12 +12,12 @@ const AdminDashboard = () => {
                     display: "flex",
                     flexDirection: "column",
                     gap: 2,
-                    marginRight: '5%',
-                    padding: 10,
+                    marginRight: '3%',
+                    padding: 5,
                     height: "100vh",
                     backgroundColor: 'black'
                 }}
-            ><Typography sx={{ color: 'white', fontSize: 25 }}>Admin Dashboard</Typography>
+            ><Typography sx={{ color: 'white', fontSize: 20 }}>Admin Dashboard</Typography>
                 <Button variant="contained" color="primary" sx={{ marginTop: '40%', }} onClick={() => setswtich(1)}>
                     Show users
                 </Button>

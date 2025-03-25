@@ -121,7 +121,7 @@ const Checkouts = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {searchCheckouts.map((checkout) => (
+                        {searchCheckouts.slice().reverse().map((checkout) => (
                             <TableRow key={checkout._id}>
                                 <TableCell>{checkout.fname}</TableCell>
                                 <TableCell>Rs {checkout.lname}</TableCell>

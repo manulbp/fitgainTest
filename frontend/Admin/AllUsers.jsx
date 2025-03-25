@@ -7,6 +7,10 @@ const AllUsers = () => {
 
     const [users, setUsers] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
+    const user = JSON.parse(localStorage.getItem('user'));
+  const userMail = user ? user.email : null;
+
+  const admin = userMail === 'adminmail@gmail.com';
     const getUsers = async () => {
         try {
             const response = await Axios.get('http://localhost:5050/api/users');
@@ -63,13 +67,13 @@ const AllUsers = () => {
                     {/* Table Body */}
                     <TableBody>
                         {searchusers.length > 0 ? (
-                            searchusers.map((user) => (
+                            searchusers.slice().reverse().map((user) => (
                                 <TableRow key={user._id}>
                                     <TableCell>{user._id}</TableCell>
                                     <TableCell>{user.username}</TableCell>
                                     <TableCell>{user.email}</TableCell>
                                     <TableCell>
-                                        <Button variant="contained" color="error" startIcon={<Delete />} onClick={() => deleteUser(user._id)}>
+                                        <Button variant="contained" color="error" startIcon={<Delete />} onClick={() => deleteUser(user._id)} disabled={user.email==='adminmail@gmail.com'}>
                                             Delete
                                         </Button>
                                     </TableCell>

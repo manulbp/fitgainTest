@@ -40,15 +40,15 @@ const CheckoutReview = () => {
         getCheckout();
     }, []);
 
-    const yourcheckouts = checkouts.filter(checkout => checkout.userId === userId);
+    
 
     const handleFilterChange = (event) => {
         setfilterStatus(event.target.value);
     };
 
     const filteredCheckouts = filterstatus === 'All'
-        ? yourcheckouts
-        : yourcheckouts.filter(check => check.status === filterstatus);
+        ? checkouts
+        : checkouts.filter(check => check.status === filterstatus);
 
 
     const searchCheckouts = filteredCheckouts.filter(yck =>
@@ -145,7 +145,7 @@ const CheckoutReview = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {searchCheckouts.map((checkout) => (
+                        {searchCheckouts.slice().reverse().map((checkout) => (
                             <TableRow key={checkout._id}>
                                 <TableCell>{checkout.fname}</TableCell>
                                 <TableCell>Rs {checkout.lname}</TableCell>
