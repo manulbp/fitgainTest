@@ -26,6 +26,7 @@ const CheckoutReview = () => {
     const [filterstatus, setfilterStatus] = useState('All');
     const [statusu, setstatus] = useState('');
 
+    //retrive checkout from database
     const getCheckout = async () => {
         try {
             const response = await Axios.get('http://localhost:5050/api/Checkout');
@@ -72,7 +73,7 @@ const CheckoutReview = () => {
 
         }
     };
-
+//Update status
     const StatusUpdate = async (id) => {
         try {
 

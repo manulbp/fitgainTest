@@ -24,6 +24,7 @@ const Checkouts = () => {
     const userId = user ? user.userId : null;
     const [filterstatus, setfilterStatus] = useState('All');
 
+    //retrive checkouts from backend
     const getCheckout = async () => {
         try {
             const response = await Axios.get('http://localhost:5050/api/Checkout');
@@ -38,6 +39,7 @@ const Checkouts = () => {
         getCheckout();
     }, []);
 
+    //Filter user defined
     const yourcheckouts = checkouts.filter(checkout => checkout.userId === userId);
 
     const handleFilterChange = (event) => {
@@ -53,6 +55,7 @@ const Checkouts = () => {
         yck.fname.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
+    //delete checkout
     const deleteCheckout = async (_id, status) => {
         if (status === 'Completed') {
             alert('This checkout is already completed and cannot be deleted.');

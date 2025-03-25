@@ -28,6 +28,7 @@ const AddCheckout = () => {
 
     const navigate = useNavigate();
 
+    //chackout validation
     const validateSchema = Yup.object().shape({
         fname: Yup.string().min(2, "Too Short!").max(50, "Too Long!").required("First name is required"),
         lname: Yup.string().min(2, "Too Short!").max(50, "Too Long!").required("Last name is required"),
@@ -41,6 +42,7 @@ const AddCheckout = () => {
             .matches(/^0\d{9}$/, "Invalid Mobile Number (Must start with 0 and be 10 digits)")
             .required("Mobile Number is required"),
     });
+    // addCheckout function
     const addCheckout = async (e) => {
 
         e.preventDefault();
