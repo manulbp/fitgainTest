@@ -3,7 +3,8 @@ import express from 'express';
 import mongoose from 'mongoose';
 import productRoutes from './routes/product.route.js'; 
 import authRoutes from './routes/auth.route.js';
-
+import routerL from './routes/loginRoutes.js';
+import cors from 'cors';
 dotenv.config(); 
 mongoose
   .connect(process.env.MONGO)
@@ -17,6 +18,10 @@ mongoose
 const app = express();
 app.use(express.json());
 
+app.use(cors({
+  origin: "http://localhost:5173", // Allow frontend
+  credentials: true, // Allow cookies (if needed)
+}));
 
 
 
@@ -27,4 +32,4 @@ app.listen(5050, () => {
 
 app.use('/backend/product', productRoutes);
 app.use("/backend/auth", authRoutes);
-
+app.use("/api", routerL);
