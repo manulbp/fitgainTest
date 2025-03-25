@@ -61,6 +61,8 @@ const AddCheckout = () => {
                 userId: userId,
                 total: 96800
             });
+
+            //Clears the form fields after submission
             console.log(response);
             navigate('/Checkouts');
             alert('Your order is proccessing please wait for response via call!');
