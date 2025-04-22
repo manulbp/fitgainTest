@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
     Box,
     Button,
@@ -15,8 +15,20 @@ import * as Yup from 'yup';
 import Axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const AddCheckout = () => {
+// District data organized by province
+const provinceDistricts = {
+    "Western": ["Colombo", "Gampaha", "Kalutara"],
+    "Southern": ["Galle", "Matara", "Hambantota"],
+    "North-Western": ["Kurunegala", "Puttalam"],
+    "Central": ["Kandy", "Matale", "Nuwara Eliya"],
+    "Sabaragamuva": ["Kegalle", "Ratnapura"],
+    "Northern": ["Jaffna", "Kilinochchi", "Mannar", "Mullaitivu", "Vavuniya"],
+    "Eastern": ["Ampara", "Batticaloa", "Trincomalee"],
+    "Uva": ["Badulla", "Monaragala"],
+    "North-Central": ["Anuradhapura", "Polonnaruwa"]
+};
 
+const AddCheckout = () => {
     const [fname, setfname] = useState('');
     const [lname, setlname] = useState('');
     const [street, setStreet] = useState('');
@@ -25,6 +37,7 @@ const AddCheckout = () => {
     const [zipcode, setZipcode] = useState('');
     const [mobile, setmobile] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
+    const [districts, setDistricts] = useState([]);
 
     const user = JSON.parse(localStorage.getItem('user'));
     const userMail = user ? user.email : null;
@@ -32,7 +45,18 @@ const AddCheckout = () => {
 
     const navigate = useNavigate();
 
-    //chackout validation
+    // Update districts when province changes
+    useEffect(() => {
+        if (state && provinceDistricts[state]) {
+            setDistricts(provinceDistricts[state]);
+            setCity(''); // Reset district when province changes
+        } else {
+            setDistricts([]);
+            setCity('');
+        }
+    }, [state]);
+
+    // Validation schema
     const validateSchema = Yup.object().shape({
         fname: Yup.string().min(2, "Too Short!").max(50, "Too Long!").required("First name is required"),
         lname: Yup.string().min(2, "Too Short!").max(50, "Too Long!").required("Last name is required"),
@@ -46,13 +70,13 @@ const AddCheckout = () => {
             .matches(/^0\d{9}$/, "Invalid Mobile Number (Must start with 0 and be 10 digits)")
             .required("Mobile Number is required"),
     });
+
     // addCheckout function
     const addCheckout = async (e) => {
-
         e.preventDefault();
 
         try {
-            await validateSchema.validate({ fname, lname, street, city, state, zipcode, mobile }, { abortEarly: false })
+            await validateSchema.validate({ fname, lname, street, city, state, zipcode, mobile }, { abortEarly: false });
             const response = await Axios.post('http://localhost:5050/api/addCheckout', {
                 fname: fname,
                 lname: lname,
@@ -66,18 +90,16 @@ const AddCheckout = () => {
                 total: 96800
             });
 
-            //Clears the form fields after submission
             console.log(response);
             navigate('/Checkouts');
             alert('Your order is proccessing please wait for response via call!');
             setfname('');
             setlname('');
-            street('');
-            city('');
-            state('');
-            zipcode('');
-            mobile('');
-
+            setStreet('');
+            setCity('');
+            setState('');
+            setZipcode('');
+            setmobile('');
         } catch (error) {
             if (error instanceof Yup.ValidationError) {
                 const errors = {};
@@ -90,7 +112,6 @@ const AddCheckout = () => {
             }
         }
     }
-
 
     return (
         <Box sx={{ maxWidth: "1100px", margin: "auto", padding: 4 }}>
@@ -114,39 +135,55 @@ const AddCheckout = () => {
                                 <TextField fullWidth label="Email Address" variant="outlined" value={userMail} />
                             </Grid> 
                             
+                            <Grid item xs={12} sm={6}>
+                                <FormControl fullWidth variant="outlined">
+                                    <InputLabel>Province</InputLabel>
+                                    <Select
+                                        label="Province"
+                                        value={state}
+                                        onChange={(e) => setState(e.target.value)}
+                                    >
+                                        <MenuItem value="">
+                                            <em>Select a province</em>
+                                        </MenuItem>
+                                        <MenuItem value="Western">Western</MenuItem>
+                                        <MenuItem value="Southern">Southern</MenuItem>
+                                        <MenuItem value="North-Western">North-Western</MenuItem>
+                                        <MenuItem value="Central">Central</MenuItem>
+                                        <MenuItem value="Sabaragamuva">Sabaragamuva</MenuItem>
+                                        <MenuItem value="Northern">Northern</MenuItem>
+                                        <MenuItem value="Eastern">Eastern</MenuItem>
+                                        <MenuItem value="Uva">Uva</MenuItem>
+                                        <MenuItem value="North-Central">North-Central</MenuItem>
+                                    </Select>
+                                </FormControl>
+                                {errorMessage.state && <div style={{ color: 'red' }}>{errorMessage.state}</div>}
+                            </Grid>
                             
                             <Grid item xs={12} sm={6}>
-    <FormControl fullWidth variant="outlined">
-        <InputLabel>Province</InputLabel>
-        <Select
-            label="Province"
-            value={state}
-            onChange={(e) => setState(e.target.value)}
-        >
-            <MenuItem value="">
-                <em>Select a province</em>
-            </MenuItem>
-            <MenuItem value="Alberta">Alberta</MenuItem>
-            <MenuItem value="British Columbia">British Columbia</MenuItem>
-            <MenuItem value="Manitoba">Manitoba</MenuItem>
-            <MenuItem value="New Brunswick">New Brunswick</MenuItem>
-            <MenuItem value="Newfoundland and Labrador">Newfoundland and Labrador</MenuItem>
-            <MenuItem value="Northwest Territories">Northwest Territories</MenuItem>
-            <MenuItem value="Nova Scotia">Nova Scotia</MenuItem>
-            <MenuItem value="Nunavut">Nunavut</MenuItem>
-            <MenuItem value="Ontario">Ontario</MenuItem>
-            <MenuItem value="Prince Edward Island">Prince Edward Island</MenuItem>
-            <MenuItem value="Quebec">Quebec</MenuItem>
-            <MenuItem value="Saskatchewan">Saskatchewan</MenuItem>
-            <MenuItem value="Yukon">Yukon</MenuItem>
-        </Select>
-    </FormControl>
-    {errorMessage.state && <div style={{ color: 'red' }}>{errorMessage.state}</div>}
-</Grid>
-<Grid item xs={12} sm={6}>
-                                <TextField fullWidth label="City" variant="outlined" value={city} onChange={(e) => setCity(e.target.value)} />
+                                <FormControl fullWidth variant="outlined">
+                                    <InputLabel>District</InputLabel>
+                                    <Select
+                                        label="District"
+                                        value={city}
+                                        onChange={(e) => setCity(e.target.value)}
+                                        disabled={!state}
+                                    >
+                                        <MenuItem value="">
+                                            <em>Select a district</em>
+                                        </MenuItem>
+                                        {districts.map((district) => (
+                                            <MenuItem key={district} value={district}>
+                                                {district}
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
                                 {errorMessage.city && <div style={{ color: 'red' }}>{errorMessage.city}</div>}
-
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField fullWidth label="City" variant="outlined" value={street} onChange={(e) => setStreet(e.target.value)} />
+                                {errorMessage.street && <div style={{ color: 'red' }}>{errorMessage.street}</div>}
                             </Grid>
                             <Grid item xs={12}>
                                 <TextField fullWidth label="Street" variant="outlined" value={street} onChange={(e) => setStreet(e.target.value)} />
