@@ -113,15 +113,8 @@ const AddCheckout = () => {
                             <Grid item xs={12}>
                                 <TextField fullWidth label="Email Address" variant="outlined" value={userMail} />
                             </Grid> 
-                            <Grid item xs={12}>
-                                <TextField fullWidth label="Street" variant="outlined" value={street} onChange={(e) => setStreet(e.target.value)} />
-                                {errorMessage.street && <div style={{ color: 'red' }}>{errorMessage.street}</div>}
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <TextField fullWidth label="City" variant="outlined" value={city} onChange={(e) => setCity(e.target.value)} />
-                                {errorMessage.city && <div style={{ color: 'red' }}>{errorMessage.city}</div>}
-
-                            </Grid>
+                            
+                            
                             <Grid item xs={12} sm={6}>
     <FormControl fullWidth variant="outlined">
         <InputLabel>Province</InputLabel>
@@ -150,6 +143,15 @@ const AddCheckout = () => {
     </FormControl>
     {errorMessage.state && <div style={{ color: 'red' }}>{errorMessage.state}</div>}
 </Grid>
+<Grid item xs={12} sm={6}>
+                                <TextField fullWidth label="City" variant="outlined" value={city} onChange={(e) => setCity(e.target.value)} />
+                                {errorMessage.city && <div style={{ color: 'red' }}>{errorMessage.city}</div>}
+
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField fullWidth label="Street" variant="outlined" value={street} onChange={(e) => setStreet(e.target.value)} />
+                                {errorMessage.street && <div style={{ color: 'red' }}>{errorMessage.street}</div>}
+                            </Grid>
                             <Grid item xs={12}>
                                 <TextField fullWidth label="Zip Code" variant="outlined" value={zipcode} onChange={(e) => setZipcode(e.target.value)} />
                                 {errorMessage.zipcode && <div style={{ color: 'red' }}>{errorMessage.zipcode}</div>}
