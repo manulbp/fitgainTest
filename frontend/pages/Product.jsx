@@ -12,6 +12,7 @@ const Product = () => {
     category: '',
     condition:'',
     quantity:'',
+    date:'',
     price: '',
     guidance: '',
     image: null,
@@ -63,6 +64,7 @@ const Product = () => {
       category: formData.category,
       condition: formData.condition,
       quantity: parseInt(formData.quantity),
+      date:formData.date,
       price: parseFloat(formData.price),
       guidance: formData.guidance,
     };
@@ -90,6 +92,7 @@ const Product = () => {
         category: '', 
         condition: '',
         quantity:'',
+        date:'',
         price: '', 
         guidance: '', 
       
@@ -188,10 +191,10 @@ return (
               className='w-full border border-gray-300 bg-white rounded px-3 py-2 text-sm focus:outline-none focus:border-gray-400'
             />
           </div>
-          
-          
 
-          <div className="add-price flex-col mt-5">
+        
+          
+        <div className="add-price flex-col mt-5">
             <p>Product price:</p>
             <input 
               type="number" 

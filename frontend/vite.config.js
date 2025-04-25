@@ -8,7 +8,7 @@ export default defineConfig({
     proxy: {
       '/backend' :{
         
-        target:'http://localhost:5060',
+        target:'http://localhost:5080',
         secure: false,
 
     },
