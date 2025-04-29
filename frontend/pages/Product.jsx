@@ -12,7 +12,6 @@ const Product = () => {
     category: '',
     condition:'',
     quantity:'',
-    date:'',
     price: '',
     guidance: '',
     image: null,
@@ -44,58 +43,53 @@ const Product = () => {
     e.preventDefault();
     setLoading(true);
     setErrorMessage(null);
-
+  
     if (!formData.productname || !formData.description || !formData.category || !formData.quantity || !formData.price) {
       setErrorMessage("All required fields must be filled");
       setLoading(false);
       return;
     }
-
-    //Price validation section
-      if (parseFloat(formData.price) <= 0) {
+  
+    if (parseFloat(formData.price) <= 0) {
       setErrorMessage("Product price must be a positive number");
       setLoading(false);
       return;
     }
-
-    const productData = {
-      productname: formData.productname,
-      description: formData.description,
-      category: formData.category,
-      condition: formData.condition,
-      quantity: parseInt(formData.quantity),
-      date:formData.date,
-      price: parseFloat(formData.price),
-      guidance: formData.guidance,
-    };
-
+  
+    const productData = new FormData();
+    productData.append("productname", formData.productname);
+    productData.append("description", formData.description);
+    productData.append("category", formData.category);
+    productData.append("condition", formData.condition);
+    productData.append("quantity", formData.quantity);
+    productData.append("price", formData.price);
+    productData.append("guidance", formData.guidance);
+    if (formData.image) {
+      productData.append("image", formData.image);
+    }
+  
     try {
       const res = await fetch("/backend/product/add", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(productData),
+        body: productData, // 🆕 Don't set content-type when using FormData
       });
-
-      const text = await res.text(); 
-      const data = text ? JSON.parse(text) : {}; 
-
+  
+      const data = await res.json();
       if (!res.ok) {
         throw new Error(data.message || "Failed to add product");
       }
-
+  
       alert("Product added successfully!");
-      setFormData({ 
-        productname: '', 
-        description: '', 
-        category: '', 
+      setFormData({
+        productname: '',
+        description: '',
+        category: '',
         condition: '',
-        quantity:'',
-        date:'',
-        price: '', 
-        guidance: '', 
-      
+        quantity: '',
+        price: '',
+        guidance: '',
+        image: null,
+        imagePreview: null,
       });
     } catch (error) {
       console.error("Error:", error);
@@ -104,6 +98,7 @@ const Product = () => {
       setLoading(false);
     }
   };
+  
 
  
 return (

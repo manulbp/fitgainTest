@@ -13,6 +13,8 @@ export const addproducts = async (req, res) => {
     if (!productname || !description || !category || !quantity || !price) {
       return res.status(400).json({ message: "All required fields must be filled" });
     }
+
+    const imageUrl = req.file ? `/uploads/${req.file.filename}` : null;
   
     try {
       const product = new Product({ 
@@ -22,7 +24,8 @@ export const addproducts = async (req, res) => {
         condition: condition || "New",  
         quantity, 
         price, 
-        guidance: guidance || "No guidance available"  
+        guidance: guidance || "No guidance available",  
+        image: imageUrl,
       });
       
       await product.save();
@@ -109,3 +112,15 @@ export const deleteProduct = async (req, res) => {
     }
 };
 
+export const getAllProducts = async (req, res) => {
+    try {
+        const products = await Product.find();
+        return res.status(200).json({ products });
+    } catch (err) {
+        console.error("Error fetching products:", err);
+        return res.status(500).json({
+            message: "Server error",
+            error: err.message,
+        });
+    }
+};
