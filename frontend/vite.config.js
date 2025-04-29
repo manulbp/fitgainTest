@@ -1,23 +1,20 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
-// https://vite.dev/config/
+
 export default defineConfig({
-
-  server:{
+  server: {
     proxy: {
-      '/backend' :{
-        
-        target:'http://localhost:5080',
+      '/backend': {
+        target: 'http://localhost:5080',
         secure: false,
-
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/backend/, '')
+      },
     },
-},
-},
-  plugins: [react()],
-
+  },
   plugins: [
+    react(),
     tailwindcss(),
   ],
 })
-

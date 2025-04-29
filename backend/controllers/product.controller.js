@@ -13,8 +13,6 @@ export const addproducts = async (req, res) => {
     if (!productname || !description || !category || !quantity || !price) {
       return res.status(400).json({ message: "All required fields must be filled" });
     }
-
-    const imageUrl = req.file ? `/uploads/${req.file.filename}` : null;
   
     try {
       const product = new Product({ 
@@ -24,8 +22,7 @@ export const addproducts = async (req, res) => {
         condition: condition || "New",  
         quantity, 
         price, 
-        guidance: guidance || "No guidance available",  
-        image: imageUrl,
+        guidance: guidance || "No guidance available"  
       });
       
       await product.save();
@@ -63,6 +60,7 @@ export const getbyId = async (req, res) => {
 export const updateProduct = async (req, res) => {
     const { pid } = req.params;
 
+    // Check if the product ID is valid
     if (!mongoose.Types.ObjectId.isValid(pid)) {
         return res.status(400).json({ message: "Invalid product ID format" });
     }
@@ -70,6 +68,7 @@ export const updateProduct = async (req, res) => {
     const { productname, description, category, condition, quantity, price, guidance } = req.body;
 
     try {
+        // Update the product by ID
         const productu = await Product.findByIdAndUpdate(
             pid,
             { productname, description, category, condition, quantity, price, guidance },

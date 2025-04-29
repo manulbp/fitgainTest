@@ -1,84 +1,65 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
-export default function Home() {
+const Home = () => {
+  const [products, setProducts] = useState([]);
+  const location = useLocation();
+  const newProduct = location.state?.newProduct || null;
+
+  // Fetch all products from backend
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch('http://localhost:5080/backend/product/get');
+        const data = await response.json();
+        setProducts(data.products || []);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  // Add newProduct to the top if coming from Product.jsx
+  const displayProducts = newProduct ? [newProduct, ...products] : products;
+
   return (
-    <div className="flex flex-col min-h-screen">
-      {/* Hero Banner */}
-      <div className="bg-gray-300 w-full h-40 flex items-center justify-center">
-        <div className="flex items-center justify-center">
-          <img src="/api/placeholder/100/100" alt="Hero banner" className="opacity-50" />
-        </div>
+    <div className="flex flex-col min-h-screen px-6 py-4">
+      {/* Hero Section */}
+      <div className="bg-gray-300 w-full h-40 flex items-center justify-center mb-6">
+        <h1 className="text-2xl font-bold text-gray-700">Welcome to FitGear Store</h1>
       </div>
 
-      {/* Explore Products Section */}
-      <div className="py-6 px-4">
-        <h2 className="text-xl font-semibold mb-2">Explore our products</h2>
-        <p className="text-sm text-gray-500 mb-6">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc maximus, nulla ut commodo
-          sagittis, sapien dui mattis dui, non pulvinar lorem felis nec erat.
-        </p>
-
-        {/* Product Categories */}
-        <div className="flex justify-between mb-8">
-          <CategoryCircle title="Gym equipment" />
-          <CategoryCircle title="Supplements" />
-          <CategoryCircle title="Used items" />
-        </div>
-
-        {/* Top Items Section */}
-        <h2 className="text-xl font-semibold mb-4">Top items near you</h2>
-        <div className="grid grid-cols-3 gap-4 mb-8">
-          <FeatureCard />
-          <FeatureCard />
-          <FeatureCard />
-        </div>
+      {/* Explore Section */}
+      <h2 className="text-xl font-semibold mb-4">Explore Our Products</h2>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        {displayProducts.map((product, index) => (
+          <ProductCard key={index} product={product} />
+        ))}
       </div>
 
-      {/* Dark Divider */}
-      <div className="bg-gray-300 w-full h-5 mt-auto"></div>
-
-      {/* Bottom Features Section */}
-      <div className="py-6 px-4">
-        <div className="grid grid-cols-3 gap-4">
-          <FeatureCard />
-          <FeatureCard />
-          <FeatureCard />
-        </div>
-      </div>
+      {/* Footer Divider */}
+      <div className="bg-gray-300 w-full h-6 mt-10"></div>
     </div>
   );
-}
+};
 
-// Category Circle Component
-function CategoryCircle({ title }) {
+const ProductCard = ({ product }) => {
   return (
-    <div className="flex flex-col items-center">
-      <div 
-        className="w-24 h-24 rounded-full border-2 border-gray-300 flex items-center justify-center mb-2 cursor-pointer hover:border-gray-400 transition-all"
-        onClick={() => console.log(`Clicked on ${title}`)}
-      >
-        <img src="/api/placeholder/50/50" alt={title} className="opacity-50" />
+    <div className="bg-white shadow-md rounded p-4 hover:shadow-lg transition-all">
+      <h3 className="text-lg font-semibold mb-1">{product.productname}</h3>
+      <p className="text-sm text-gray-600 mb-2">{product.description}</p>
+      <div className="flex justify-between items-center">
+        <span className="text-sm text-gray-500">Category: {product.category}</span>
+        <span className="text-sm text-green-700 font-bold">${product.price}</span>
       </div>
-      <span className="text-sm text-center">{title}</span>
+      <p className="text-xs text-gray-500 mt-1">Condition: {product.condition}</p>
+      {product.guidance && (
+        <p className="text-xs mt-2 italic text-blue-700">Guidance: {product.guidance}</p>
+      )}
     </div>
   );
-}
+};
 
-// Feature Card Component
-function FeatureCard() {
-  return (
-    <div 
-      className="bg-gray-100 p-4 rounded cursor-pointer hover:shadow-md transition-all"
-      onClick={() => console.log('Feature clicked')}
-    >
-      <div className="mb-2">
-        <img src="/api/placeholder/100/60" alt="Feature" className="w-full opacity-50" />
-      </div>
-      <h3 className="font-semibold mb-1">Feature</h3>
-      <p className="text-xs text-gray-500">
-        Lorem ipsum dolor sit amet nulla adipiscing elit. Nunc maximus, nulla adipiscing elit. Nunc...
-      </p>
-    </div>
-  );
-}
-
+export default Home;
