@@ -15,6 +15,9 @@ import {
     Typography,
     Box
 } from "@mui/material";
+import jsPDF from 'jspdf';
+import autoTable from "jspdf-autotable";
+import { FaFilePdf } from 'react-icons/fa';
 
 const Checkouts = () => {
     const [checkouts, setCheckouts] = useState([]);
@@ -86,8 +89,83 @@ const Checkouts = () => {
                 return "black";
         }
     };
+
+    // Generate PDF for a single checkout
+    const generatePDF = (checkout) => {
+        const doc = new jsPDF();
+
+        doc.setFontSize(18);
+        doc.text('Checkout Details', 14, 22);
+
+        doc.setFontSize(12);
+        const data = [
+            ['First Name', checkout.fname],
+            ['Last Name', checkout.lname],
+            ['Email', checkout.userMail],
+            ['Phone', checkout.mobile],
+            ['Total', `${checkout.total} LKR`],
+            ['Created At', new Date(checkout.createdAt).toLocaleString()],
+            ['Status', checkout.status],
+        ];
+
+        data.forEach((item, index) => {
+            doc.text(`${item[0]}: ${item[1]}`, 14, 40 + (index * 10));
+        });
+
+        doc.save(`checkout_${checkout._id}.pdf`);
+    };
+
+    const generateAllPDF = (checkouts) => {
+        const doc = new jsPDF();
+
+        // Title
+        doc.setFontSize(18);
+        doc.text("All Checkouts Report", 14, 22);
+
+        // Table
+        autoTable(doc, {
+            startY: 30,
+            head: [["First Name", "Last Name", "Email", "Phone", "Total (LKR)", "Created At", "Status"]],
+            body: checkouts.map((checkout) => [
+                checkout.fname,
+                checkout.lname,
+                checkout.userMail,
+                checkout.mobile,
+                `${checkout.total} LKR`,
+                new Date(checkout.createdAt).toLocaleString(),
+                checkout.status,
+            ]),
+            theme: "grid",
+            headStyles: {
+                fillColor: [34, 102, 102],  // Dark teal color
+                textColor: [255, 255, 255],
+                fontStyle: "bold",
+            },
+            styles: {
+                fontSize: 10,
+                cellPadding: 3,
+            },
+        });
+
+        // Footer
+        const pageHeight = doc.internal.pageSize.height || doc.internal.pageSize.getHeight();
+        doc.setFontSize(10);
+        doc.text(`Generated on: ${new Date().toLocaleString()}`, 14, pageHeight - 10);
+
+        doc.save("All_Checkouts_Report.pdf");
+    };
+
     return (
         <Box sx={{ margin: "auto", padding: 4 }}>
+            <Button
+                variant="outlined"
+                color="primary"
+                onClick={() => generateAllPDF(searchCheckouts.slice().reverse())}
+                sx={{ ml: 0, mb: 3 }}
+            >
+                Download All Checkouts
+            </Button>
+
             <Typography variant="h5" fontWeight="bold" gutterBottom>
                 Your Checkouts
             </Typography>
@@ -144,6 +222,14 @@ const Checkouts = () => {
                                         disabled={checkout.status === "Completed"}
                                     >
                                         Delete
+                                    </Button>
+                                    <Button
+
+                                        color="primary"
+                                        onClick={() => generatePDF(checkout)}
+                                        sx={{ ml: 1 }}
+                                    >
+                                        <FaFilePdf />
                                     </Button>
                                 </TableCell>
                             </TableRow>

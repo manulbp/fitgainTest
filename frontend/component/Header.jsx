@@ -5,6 +5,8 @@ import Axios from 'axios';
 import { FaArrowLeft, FaTimes, FaUser } from "react-icons/fa";
 import { Button, Box, Dialog, DialogTitle, DialogContent, DialogActions, Grid, TextField, Typography, IconButton, Popover, Select, MenuItem } from "@mui/material";
 import Profile from '../pages/Profile';
+import LoginG from '../pages/googlelogin';
+
 
 
 export default function Header() {
@@ -44,7 +46,7 @@ export default function Header() {
       .oneOf([Yup.ref('password'), undefined], 'Passwords must match') // Validate password confirmation
       .required('Please re-type password'), // Added required validation
   });
-//Login form validation
+  //Login form validation
   const validateSchema2 = Yup.object().shape({
     usernamel: Yup.string().required('Username is required'),
     passwordl: Yup.string()
@@ -82,7 +84,7 @@ export default function Header() {
 
       if (user.email === 'adminmail@gmail.com') {
         navigate('/admindashboard');
-      }else{
+      } else {
         navigate('/');
       }
 
@@ -104,7 +106,7 @@ export default function Header() {
       }
     }
   }
-//Signup function
+  //Signup function
   const adduser = async () => {
     try {
       await validateSchema.validate({ username, email, password, confpassword }, { abortEarly: false });
@@ -146,7 +148,8 @@ export default function Header() {
         <ul className='flex gap-4'>
           <li><Link to="/">Home</Link></li>
           <li><Link to="/product">Products</Link></li>
-          <li><Link to="/orders">Orders</Link></li>
+          <li><Link to="/cart">Cart</Link></li>
+      
           <li><Link to="/contact">Contact Us</Link></li>
           {admin && (
             <>
@@ -155,7 +158,7 @@ export default function Header() {
           )}
           {user ? (
             <>
-              <button style={{ cursor: 'pointer' }} onClick={handleProfileClick}>{user.username}</button>
+              <button style={{ cursor: 'pointer' }} onClick={handleProfileClick}>{user.username || user.displayName}</button>
             </>
           ) :
             (
@@ -201,7 +204,10 @@ export default function Header() {
                 {errorMessage2.passwordl && <div style={{ color: 'red' }}>{errorMessage2.passwordl}</div>}
                 {errorl && <Typography color="error">{errorl}</Typography>}
               </Box>
-              <Grid container justifyContent="flex-end" sx={{ mt: 1 }}>
+              <Grid container
+                justifyContent="flex-end"
+                sx={{ mt: 1, gap: "38%" }}>
+                <LoginG />
                 <Typography variant="body2">
                   Don't have an account?{" "}
                   <Link onClick={() => setStep(2)} style={{ color: "#D2691E", fontWeight: 600, cursor: "pointer" }}>

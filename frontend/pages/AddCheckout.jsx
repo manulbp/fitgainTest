@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import * as Yup from 'yup';
 import Axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 // District data organized by province
 const provinceDistricts = {
@@ -21,7 +21,7 @@ const provinceDistricts = {
     "Southern": ["Galle", "Matara", "Hambantota"],
     "North-Western": ["Kurunegala", "Puttalam"],
     "Central": ["Kandy", "Matale", "Nuwara Eliya"],
-    "Sabaragamuwa": ["Kegalle", "Ratnapura"],
+    "Sabaragamuva": ["Kegalle", "Ratnapura"],
     "Northern": ["Jaffna", "Kilinochchi", "Mannar", "Mullaitivu", "Vavuniya"],
     "Eastern": ["Ampara", "Batticaloa", "Trincomalee"],
     "Uva": ["Badulla", "Monaragala"],
@@ -32,13 +32,17 @@ const AddCheckout = () => {
     const [fname, setfname] = useState('');
     const [lname, setlname] = useState('');
     const [street, setStreet] = useState('');
-    const [town, setTown] = useState('');
-    const [district, setDistrict] = useState('');
+    const [city, setCity] = useState('');
     const [state, setState] = useState('');
     const [zipcode, setZipcode] = useState('');
     const [mobile, setmobile] = useState('');
-    const [errorMessage, setErrorMessage] = useState({});
+    const [errorMessage, setErrorMessage] = useState('');
     const [districts, setDistricts] = useState([]);
+    const location = useLocation();
+    const totalFromCart = parseFloat(location.state?.total || 0);
+
+    const deliveryFee = 300;
+    const totalWithDelivery = totalFromCart + deliveryFee;
 
     const user = JSON.parse(localStorage.getItem('user'));
     const userMail = user ? user.email : null;
@@ -50,10 +54,10 @@ const AddCheckout = () => {
     useEffect(() => {
         if (state && provinceDistricts[state]) {
             setDistricts(provinceDistricts[state]);
-            setDistrict(''); // Reset district when province changes
+            setCity(''); // Reset district when province changes
         } else {
             setDistricts([]);
-            setDistrict('');
+            setCity('');
         }
     }, [state]);
 
@@ -62,8 +66,7 @@ const AddCheckout = () => {
         fname: Yup.string().min(2, "Too Short!").max(50, "Too Long!").required("First name is required"),
         lname: Yup.string().min(2, "Too Short!").max(50, "Too Long!").required("Last name is required"),
         street: Yup.string().required("Street address is required"),
-        town: Yup.string().required("Town/Area is required"),
-        district: Yup.string().required("District is required"),
+        city: Yup.string().required("City is required"),
         state: Yup.string().required("State is required"),
         zipcode: Yup.string()
             .matches(/^\d{5,6}$/, "Invalid Zip Code")
@@ -78,39 +81,27 @@ const AddCheckout = () => {
         e.preventDefault();
 
         try {
-            await validateSchema.validate({ 
-                fname, 
-                lname, 
-                street, 
-                town, 
-                district, 
-                state, 
-                zipcode, 
-                mobile 
-            }, { abortEarly: false });
-            
+            await validateSchema.validate({ fname, lname, street, city, state, zipcode, mobile }, { abortEarly: false });
             const response = await Axios.post('http://localhost:5050/api/addCheckout', {
                 fname: fname,
                 lname: lname,
                 street: street,
-                town: town,
-                district: district,
+                city: city,
                 state: state,
                 zipcode: zipcode,
                 mobile: mobile,
                 userMail: userMail,
                 userId: userId,
-                total: 96800
+                total: totalWithDelivery
             });
 
             console.log(response);
             navigate('/Checkouts');
-            alert('Your order is processing please wait for response via call!');
+            alert('Your order is proccessing please wait for response via call!');
             setfname('');
             setlname('');
             setStreet('');
-            setTown('');
-            setDistrict('');
+            setCity('');
             setState('');
             setZipcode('');
             setmobile('');
@@ -146,9 +137,9 @@ const AddCheckout = () => {
                                 {errorMessage.lname && <div style={{ color: 'red' }}>{errorMessage.lname}</div>}
                             </Grid>
                             <Grid item xs={12}>
-                                <TextField fullWidth label="Email Address" variant="outlined" value={userMail} disabled />
-                            </Grid> 
-                            
+                                <TextField fullWidth label="Email Address" variant="outlined" value={userMail} />
+                            </Grid>
+
                             <Grid item xs={12} sm={6}>
                                 <FormControl fullWidth variant="outlined">
                                     <InputLabel>Province</InputLabel>
@@ -164,7 +155,7 @@ const AddCheckout = () => {
                                         <MenuItem value="Southern">Southern</MenuItem>
                                         <MenuItem value="North-Western">North-Western</MenuItem>
                                         <MenuItem value="Central">Central</MenuItem>
-                                        <MenuItem value="Sabaragamuwa">Sabaragamuwa</MenuItem>
+                                        <MenuItem value="Sabaragamuva">Sabaragamuva</MenuItem>
                                         <MenuItem value="Northern">Northern</MenuItem>
                                         <MenuItem value="Eastern">Eastern</MenuItem>
                                         <MenuItem value="Uva">Uva</MenuItem>
@@ -173,14 +164,14 @@ const AddCheckout = () => {
                                 </FormControl>
                                 {errorMessage.state && <div style={{ color: 'red' }}>{errorMessage.state}</div>}
                             </Grid>
-                            
+
                             <Grid item xs={12} sm={6}>
                                 <FormControl fullWidth variant="outlined">
                                     <InputLabel>District</InputLabel>
                                     <Select
                                         label="District"
-                                        value={district}
-                                        onChange={(e) => setDistrict(e.target.value)}
+                                        value={city}
+                                        onChange={(e) => setCity(e.target.value)}
                                         disabled={!state}
                                     >
                                         <MenuItem value="">
@@ -193,57 +184,29 @@ const AddCheckout = () => {
                                         ))}
                                     </Select>
                                 </FormControl>
-                                {errorMessage.district && <div style={{ color: 'red' }}>{errorMessage.district}</div>}
+                                {errorMessage.city && <div style={{ color: 'red' }}>{errorMessage.city}</div>}
                             </Grid>
-                            
                             <Grid item xs={12}>
-                                <TextField 
-                                    fullWidth 
-                                    label="Town/Area" 
-                                    variant="outlined" 
-                                    value={town} 
-                                    onChange={(e) => setTown(e.target.value)} 
-                                />
-                                {errorMessage.town && <div style={{ color: 'red' }}>{errorMessage.town}</div>}
-                            </Grid>
-                            
-                            <Grid item xs={12}>
-                                <TextField 
-                                    fullWidth 
-                                    label="Street Address" 
-                                    variant="outlined" 
-                                    value={street} 
-                                    onChange={(e) => setStreet(e.target.value)} 
-                                />
+                                <TextField fullWidth label="City" variant="outlined" value={street} onChange={(e) => setStreet(e.target.value)} />
                                 {errorMessage.street && <div style={{ color: 'red' }}>{errorMessage.street}</div>}
                             </Grid>
-                            
                             <Grid item xs={12}>
-                                <TextField 
-                                    fullWidth 
-                                    label="Zip Code" 
-                                    variant="outlined" 
-                                    value={zipcode} 
-                                    onChange={(e) => setZipcode(e.target.value)} 
-                                />
+                                <TextField fullWidth label="Street" variant="outlined" value={street} onChange={(e) => setStreet(e.target.value)} />
+                                {errorMessage.street && <div style={{ color: 'red' }}>{errorMessage.street}</div>}
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField fullWidth label="Zip Code" variant="outlined" value={zipcode} onChange={(e) => setZipcode(e.target.value)} />
                                 {errorMessage.zipcode && <div style={{ color: 'red' }}>{errorMessage.zipcode}</div>}
                             </Grid>
 
                             <Grid item xs={12}>
-                                <TextField 
-                                    fullWidth 
-                                    label="Phone" 
-                                    variant="outlined" 
-                                    type="number" 
-                                    value={mobile} 
-                                    onChange={(e) => {
-                                        const value = e.target.value;
-                                        // Allow only numbers and limit to 10 characters
-                                        if (/^\d{0,10}$/.test(value)) {
-                                            setmobile(value);
-                                        }
-                                    }} 
-                                />
+                                <TextField fullWidth label="Phone" variant="outlined" type="number" value={mobile} onChange={(e) => {
+                                    const value = e.target.value;
+                                    // Allow only numbers and limit to 10 characters
+                                    if (/^\d{0,10}$/.test(value)) {
+                                        setmobile(value);
+                                    }
+                                }} />
                                 {errorMessage.mobile && <div style={{ color: 'red' }}>{errorMessage.mobile}</div>}
                             </Grid>
                         </Grid>
@@ -258,15 +221,15 @@ const AddCheckout = () => {
                         </Typography>
                         <Box display="flex" justifyContent="space-between" mb={1}>
                             <Typography>Subtotal</Typography>
-                            <Typography>Rs 96,500</Typography>
+                            <Typography>Rs {totalFromCart.toFixed(2)}</Typography>
                         </Box>
                         <Box display="flex" justifyContent="space-between" mb={1}>
                             <Typography>Delivery fee</Typography>
-                            <Typography>Rs 300</Typography>
+                            <Typography>Rs {deliveryFee.toFixed(2)}</Typography>
                         </Box>
                         <Box display="flex" justifyContent="space-between" fontWeight="bold" mb={3}>
                             <Typography>Total</Typography>
-                            <Typography>Rs 96,800</Typography>
+                            <Typography>Rs {totalWithDelivery.toFixed(2)}</Typography>
                         </Box>
                         <Button variant="contained" color="primary" fullWidth onClick={addCheckout}>
                             Proceed to Payment
