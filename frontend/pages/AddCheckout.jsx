@@ -21,7 +21,7 @@ const provinceDistricts = {
     "Southern": ["Galle", "Matara", "Hambantota"],
     "North-Western": ["Kurunegala", "Puttalam"],
     "Central": ["Kandy", "Matale", "Nuwara Eliya"],
-    "Sabaragamuva": ["Kegalle", "Ratnapura"],
+    "Sabaragamuwa": ["Kegalle", "Ratnapura"],
     "Northern": ["Jaffna", "Kilinochchi", "Mannar", "Mullaitivu", "Vavuniya"],
     "Eastern": ["Ampara", "Batticaloa", "Trincomalee"],
     "Uva": ["Badulla", "Monaragala"],
@@ -32,11 +32,12 @@ const AddCheckout = () => {
     const [fname, setfname] = useState('');
     const [lname, setlname] = useState('');
     const [street, setStreet] = useState('');
-    const [city, setCity] = useState('');
+    const [town, setTown] = useState('');
+    const [district, setDistrict] = useState('');
     const [state, setState] = useState('');
     const [zipcode, setZipcode] = useState('');
     const [mobile, setmobile] = useState('');
-    const [errorMessage, setErrorMessage] = useState('');
+    const [errorMessage, setErrorMessage] = useState({});
     const [districts, setDistricts] = useState([]);
 
     const user = JSON.parse(localStorage.getItem('user'));
@@ -49,10 +50,10 @@ const AddCheckout = () => {
     useEffect(() => {
         if (state && provinceDistricts[state]) {
             setDistricts(provinceDistricts[state]);
-            setCity(''); // Reset district when province changes
+            setDistrict(''); // Reset district when province changes
         } else {
             setDistricts([]);
-            setCity('');
+            setDistrict('');
         }
     }, [state]);
 
@@ -61,7 +62,8 @@ const AddCheckout = () => {
         fname: Yup.string().min(2, "Too Short!").max(50, "Too Long!").required("First name is required"),
         lname: Yup.string().min(2, "Too Short!").max(50, "Too Long!").required("Last name is required"),
         street: Yup.string().required("Street address is required"),
-        city: Yup.string().required("City is required"),
+        town: Yup.string().required("Town/Area is required"),
+        district: Yup.string().required("District is required"),
         state: Yup.string().required("State is required"),
         zipcode: Yup.string()
             .matches(/^\d{5,6}$/, "Invalid Zip Code")
@@ -76,12 +78,23 @@ const AddCheckout = () => {
         e.preventDefault();
 
         try {
-            await validateSchema.validate({ fname, lname, street, city, state, zipcode, mobile }, { abortEarly: false });
+            await validateSchema.validate({ 
+                fname, 
+                lname, 
+                street, 
+                town, 
+                district, 
+                state, 
+                zipcode, 
+                mobile 
+            }, { abortEarly: false });
+            
             const response = await Axios.post('http://localhost:5050/api/addCheckout', {
                 fname: fname,
                 lname: lname,
                 street: street,
-                city: city,
+                town: town,
+                district: district,
                 state: state,
                 zipcode: zipcode,
                 mobile: mobile,
@@ -92,11 +105,12 @@ const AddCheckout = () => {
 
             console.log(response);
             navigate('/Checkouts');
-            alert('Your order is proccessing please wait for response via call!');
+            alert('Your order is processing please wait for response via call!');
             setfname('');
             setlname('');
             setStreet('');
-            setCity('');
+            setTown('');
+            setDistrict('');
             setState('');
             setZipcode('');
             setmobile('');
@@ -132,7 +146,7 @@ const AddCheckout = () => {
                                 {errorMessage.lname && <div style={{ color: 'red' }}>{errorMessage.lname}</div>}
                             </Grid>
                             <Grid item xs={12}>
-                                <TextField fullWidth label="Email Address" variant="outlined" value={userMail} />
+                                <TextField fullWidth label="Email Address" variant="outlined" value={userMail} disabled />
                             </Grid> 
                             
                             <Grid item xs={12} sm={6}>
@@ -150,7 +164,7 @@ const AddCheckout = () => {
                                         <MenuItem value="Southern">Southern</MenuItem>
                                         <MenuItem value="North-Western">North-Western</MenuItem>
                                         <MenuItem value="Central">Central</MenuItem>
-                                        <MenuItem value="Sabaragamuva">Sabaragamuva</MenuItem>
+                                        <MenuItem value="Sabaragamuwa">Sabaragamuwa</MenuItem>
                                         <MenuItem value="Northern">Northern</MenuItem>
                                         <MenuItem value="Eastern">Eastern</MenuItem>
                                         <MenuItem value="Uva">Uva</MenuItem>
@@ -165,8 +179,8 @@ const AddCheckout = () => {
                                     <InputLabel>District</InputLabel>
                                     <Select
                                         label="District"
-                                        value={city}
-                                        onChange={(e) => setCity(e.target.value)}
+                                        value={district}
+                                        onChange={(e) => setDistrict(e.target.value)}
                                         disabled={!state}
                                     >
                                         <MenuItem value="">
@@ -179,29 +193,57 @@ const AddCheckout = () => {
                                         ))}
                                     </Select>
                                 </FormControl>
-                                {errorMessage.city && <div style={{ color: 'red' }}>{errorMessage.city}</div>}
+                                {errorMessage.district && <div style={{ color: 'red' }}>{errorMessage.district}</div>}
                             </Grid>
+                            
                             <Grid item xs={12}>
-                                <TextField fullWidth label="City" variant="outlined" value={street} onChange={(e) => setStreet(e.target.value)} />
+                                <TextField 
+                                    fullWidth 
+                                    label="Town/Area" 
+                                    variant="outlined" 
+                                    value={town} 
+                                    onChange={(e) => setTown(e.target.value)} 
+                                />
+                                {errorMessage.town && <div style={{ color: 'red' }}>{errorMessage.town}</div>}
+                            </Grid>
+                            
+                            <Grid item xs={12}>
+                                <TextField 
+                                    fullWidth 
+                                    label="Street Address" 
+                                    variant="outlined" 
+                                    value={street} 
+                                    onChange={(e) => setStreet(e.target.value)} 
+                                />
                                 {errorMessage.street && <div style={{ color: 'red' }}>{errorMessage.street}</div>}
                             </Grid>
+                            
                             <Grid item xs={12}>
-                                <TextField fullWidth label="Street" variant="outlined" value={street} onChange={(e) => setStreet(e.target.value)} />
-                                {errorMessage.street && <div style={{ color: 'red' }}>{errorMessage.street}</div>}
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField fullWidth label="Zip Code" variant="outlined" value={zipcode} onChange={(e) => setZipcode(e.target.value)} />
+                                <TextField 
+                                    fullWidth 
+                                    label="Zip Code" 
+                                    variant="outlined" 
+                                    value={zipcode} 
+                                    onChange={(e) => setZipcode(e.target.value)} 
+                                />
                                 {errorMessage.zipcode && <div style={{ color: 'red' }}>{errorMessage.zipcode}</div>}
                             </Grid>
 
                             <Grid item xs={12}>
-                                <TextField fullWidth label="Phone" variant="outlined" type="number" value={mobile} onChange={(e) => {
-                                    const value = e.target.value;
-                                    // Allow only numbers and limit to 10 characters
-                                    if (/^\d{0,10}$/.test(value)) {
-                                        setmobile(value);
-                                    }
-                                }} />
+                                <TextField 
+                                    fullWidth 
+                                    label="Phone" 
+                                    variant="outlined" 
+                                    type="number" 
+                                    value={mobile} 
+                                    onChange={(e) => {
+                                        const value = e.target.value;
+                                        // Allow only numbers and limit to 10 characters
+                                        if (/^\d{0,10}$/.test(value)) {
+                                            setmobile(value);
+                                        }
+                                    }} 
+                                />
                                 {errorMessage.mobile && <div style={{ color: 'red' }}>{errorMessage.mobile}</div>}
                             </Grid>
                         </Grid>

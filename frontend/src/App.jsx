@@ -13,6 +13,7 @@ import AddCheckout from '../pages/AddCheckout';
 import Checkouts from '../pages/Checkouts,';
 import CheckoutReview from '../Admin/CheckoutReview';
 import AdminDashboard from '../Admin/AdminDashboard';
+import Cart from '../pages/Cart';
 
 
 export default function App() {
@@ -36,13 +37,14 @@ export default function App() {
           <>
             <Route path="/AddCheckoout" element={<AddCheckout />} />
             <Route path="/Checkouts" element={<Checkouts />} />
+            <Route path="/cart" element={<Cart />} />
           </>
         )}
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<AboutUs />} />
         <Route path="/product" element={<Product />} />
         <Route path="/contact" element={<ContactUs />} />
-        <Route path="/orders" element={<Orders />} />
+        <Route path="/admindashboard" element={<AdminDashboard />} />
       </Routes>
       <Footer />
       {/*footer*/}
