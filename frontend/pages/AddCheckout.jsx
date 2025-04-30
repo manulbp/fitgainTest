@@ -33,6 +33,7 @@ const AddCheckout = () => {
     const [lname, setlname] = useState('');
     const [street, setStreet] = useState('');
     const [city, setCity] = useState('');
+    const [district, setDistrict] = useState('');
     const [state, setState] = useState('');
     const [zipcode, setZipcode] = useState('');
     const [mobile, setmobile] = useState('');
@@ -54,10 +55,10 @@ const AddCheckout = () => {
     useEffect(() => {
         if (state && provinceDistricts[state]) {
             setDistricts(provinceDistricts[state]);
-            setCity(''); // Reset district when province changes
+            setDistrict(''); // Reset district when province changes
         } else {
             setDistricts([]);
-            setCity('');
+            setDistrict('');
         }
     }, [state]);
 
@@ -67,6 +68,7 @@ const AddCheckout = () => {
         lname: Yup.string().min(2, "Too Short!").max(50, "Too Long!").required("Last name is required"),
         street: Yup.string().required("Street address is required"),
         city: Yup.string().required("City is required"),
+        district: Yup.string().required("District is required"),
         state: Yup.string().required("State is required"),
         zipcode: Yup.string()
             .matches(/^\d{5,6}$/, "Invalid Zip Code")
@@ -81,12 +83,23 @@ const AddCheckout = () => {
         e.preventDefault();
 
         try {
-            await validateSchema.validate({ fname, lname, street, city, state, zipcode, mobile }, { abortEarly: false });
+            await validateSchema.validate({ 
+                fname, 
+                lname, 
+                street, 
+                city, 
+                district,
+                state, 
+                zipcode, 
+                mobile 
+            }, { abortEarly: false });
+            
             const response = await Axios.post('http://localhost:5050/api/addCheckout', {
                 fname: fname,
                 lname: lname,
                 street: street,
                 city: city,
+                district: district,
                 state: state,
                 zipcode: zipcode,
                 mobile: mobile,
@@ -97,11 +110,12 @@ const AddCheckout = () => {
 
             console.log(response);
             navigate('/Checkouts');
-            alert('Your order is proccessing please wait for response via call!');
+            alert('Your order is processing please wait for response via call!');
             setfname('');
             setlname('');
             setStreet('');
             setCity('');
+            setDistrict('');
             setState('');
             setZipcode('');
             setmobile('');
@@ -170,8 +184,8 @@ const AddCheckout = () => {
                                     <InputLabel>District</InputLabel>
                                     <Select
                                         label="District"
-                                        value={city}
-                                        onChange={(e) => setCity(e.target.value)}
+                                        value={district}
+                                        onChange={(e) => setDistrict(e.target.value)}
                                         disabled={!state}
                                     >
                                         <MenuItem value="">
@@ -184,16 +198,19 @@ const AddCheckout = () => {
                                         ))}
                                     </Select>
                                 </FormControl>
+                                {errorMessage.district && <div style={{ color: 'red' }}>{errorMessage.district}</div>}
+                            </Grid>
+                            
+                            <Grid item xs={12}>
+                                <TextField fullWidth label="City" variant="outlined" value={city} onChange={(e) => setCity(e.target.value)} />
                                 {errorMessage.city && <div style={{ color: 'red' }}>{errorMessage.city}</div>}
                             </Grid>
-                            <Grid item xs={12}>
-                                <TextField fullWidth label="City" variant="outlined" value={street} onChange={(e) => setStreet(e.target.value)} />
-                                {errorMessage.street && <div style={{ color: 'red' }}>{errorMessage.street}</div>}
-                            </Grid>
+                            
                             <Grid item xs={12}>
                                 <TextField fullWidth label="Street" variant="outlined" value={street} onChange={(e) => setStreet(e.target.value)} />
                                 {errorMessage.street && <div style={{ color: 'red' }}>{errorMessage.street}</div>}
                             </Grid>
+                            
                             <Grid item xs={12}>
                                 <TextField fullWidth label="Zip Code" variant="outlined" value={zipcode} onChange={(e) => setZipcode(e.target.value)} />
                                 {errorMessage.zipcode && <div style={{ color: 'red' }}>{errorMessage.zipcode}</div>}
