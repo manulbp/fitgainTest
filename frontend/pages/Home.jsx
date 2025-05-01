@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 const Home = () => {
   const [products, setProducts] = useState([]);
   const location = useLocation();
   const newProduct = location.state?.newProduct || null;
 
-  // Fetch all products from backend
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch('http://localhost:5080/backend/product/get');
+        const response = await fetch('http://localhost:5080/backend/product/all');
         const data = await response.json();
         setProducts(data.products || []);
       } catch (error) {
@@ -21,45 +20,60 @@ const Home = () => {
     fetchProducts();
   }, []);
 
-  // Add newProduct to the top if coming from Product.jsx
-  const displayProducts = newProduct ? [newProduct, ...products] : products;
+  const displayProducts = newProduct
+    ? [newProduct, ...products.filter(p => p._id !== newProduct._id)]
+    : products;
 
   return (
-    <div className="flex flex-col min-h-screen px-6 py-4">
-      {/* Hero Section */}
-      <div className="bg-gray-300 w-full h-40 flex items-center justify-center mb-6">
-        <h1 className="text-2xl font-bold text-gray-700">Welcome to FitGear Store</h1>
-      </div>
+    <div className="flex flex-col min-h-screen bg-gray-50 px-6 py-8">
+      <header className="bg-gradient-to-r from-gray-600 to-gray-700 text-white p-6 rounded-lg shadow mb-8">
+        <h1 className="text-3xl font-bold text-center">🏋️‍♂️ Fit-Gain Store</h1>
+        <p className="text-center mt-2 text-sm">
+          High-quality gear & supplements to boost your fitness journey
+        </p>
+      </header>
 
-      {/* Explore Section */}
-      <h2 className="text-xl font-semibold mb-4">Explore Our Products</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {displayProducts.map((product, index) => (
-          <ProductCard key={index} product={product} />
-        ))}
-      </div>
+      <section>
+        <h2 className="text-2xl font-semibold mb-6 text-gray-800">Explore Our Products</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
+          {displayProducts.map((product, index) => (
+            <ProductCard key={index} product={product} />
+          ))}
+        </div>
+      </section>
 
-      {/* Footer Divider */}
-      <div className="bg-gray-300 w-full h-6 mt-10"></div>
+      <footer className="mt-12 p-4 text-center text-gray-500 text-sm border-t border-gray-300">
+        © {new Date().getFullYear()} FitGear. All rights reserved.
+      </footer>
     </div>
   );
 };
 
-const ProductCard = ({ product }) => {
-  return (
-    <div className="bg-white shadow-md rounded p-4 hover:shadow-lg transition-all">
-      <h3 className="text-lg font-semibold mb-1">{product.productname}</h3>
-      <p className="text-sm text-gray-600 mb-2">{product.description}</p>
-      <div className="flex justify-between items-center">
-        <span className="text-sm text-gray-500">Category: {product.category}</span>
-        <span className="text-sm text-green-700 font-bold">${product.price}</span>
+const ProductCard = ({ product }) => (
+  <div className="bg-white border border-gray-200 rounded-2xl shadow-sm hover:shadow-xl transition duration-300 p-5 flex flex-col justify-between">
+    <div>
+      <h3 className="text-xl font-bold text-gray-800 mb-2">{product.productname}</h3>
+      <p className="text-sm text-gray-600 mb-3 line-clamp-3">{product.description}</p>
+      <div className="flex justify-between text-sm text-gray-700 font-medium mb-2">
+        <span>Category: <span className="font-normal">{product.category}</span></span>
+        <span className="text-green-500">${product.price}</span>
       </div>
-      <p className="text-xs text-gray-500 mt-1">Condition: {product.condition}</p>
+      <p className="text-xs text-gray-500">Condition: {product.condition}</p>
       {product.guidance && (
-        <p className="text-xs mt-2 italic text-blue-700">Guidance: {product.guidance}</p>
+        <p className="text-xs mt-2 italic text-gray-600">Guidance: {product.guidance}</p>
       )}
     </div>
-  );
-};
+
+   
+    
+    <button
+      className="mt-4 bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-200"
+      onClick={() => alert(`Order placed for ${product.productname}`)}
+    >
+      Order
+    </button>
+    
+  </div>
+);
 
 export default Home;
