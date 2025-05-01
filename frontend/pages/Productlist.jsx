@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom'; // Import useNavigate instead of useHistory
+import jsPDF from 'jspdf';
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
@@ -38,6 +39,68 @@ const ProductList = () => {
     }
   };
 
+  const generateReport = () => {
+    const doc = new jsPDF();
+  
+    doc.setFontSize(16);
+    doc.text('Product Report', 20, 20);
+  
+    let yPosition = 30;
+    products.forEach((product, index) => {
+      doc.setFontSize(12);
+      doc.text(`Product #${index + 1}`, 20, yPosition);
+      yPosition += 10;
+  
+      // Draw a horizontal line for product separation
+      doc.setLineWidth(0.5);
+      doc.line(20, yPosition, 190, yPosition);
+      yPosition += 5;
+  
+      // Product details in an orderly manner
+      doc.text(`Name:`, 20, yPosition);
+      doc.text(product.productname, 50, yPosition);
+      yPosition += 8;
+  
+      doc.text(`Description:`, 20, yPosition);
+      doc.text(product.description, 50, yPosition, { maxWidth: 140 });
+      yPosition += 12;
+  
+      doc.text(`Category:`, 20, yPosition);
+      doc.text(product.category, 50, yPosition);
+      yPosition += 8;
+  
+      doc.text(`Condition:`, 20, yPosition);
+      doc.text(product.condition, 50, yPosition);
+      yPosition += 8;
+  
+      doc.text(`Quantity:`, 20, yPosition);
+      doc.text(`${product.quantity}`, 50, yPosition);
+      yPosition += 8;
+  
+      doc.text(`Price:`, 20, yPosition);
+      doc.text(`$${product.price}`, 50, yPosition);
+      yPosition += 8;
+  
+      doc.text(`Guidance:`, 20, yPosition);
+      doc.text(product.guidance || 'N/A', 50, yPosition);
+      yPosition += 12;
+  
+      // Draw a horizontal line to separate products
+      doc.setLineWidth(0.5);
+      doc.line(20, yPosition, 190, yPosition);
+      yPosition += 5;
+  
+      // If the page is full, add a new page
+      if (yPosition > 270) {
+        doc.addPage();
+        yPosition = 20;
+      }
+    });
+  
+    doc.save('product_report.pdf');
+  };
+  
+
   useEffect(() => {
     fetchProducts();
   }, []);
@@ -48,6 +111,15 @@ const ProductList = () => {
   return (
     <div className="max-w-4xl mx-auto mt-10 p-4">
       <h1 className="text-2xl font-semibold mb-6 text-center">Product List</h1>
+      
+      {/* Button to generate report */}
+      <button
+        onClick={generateReport}
+        className="mb-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
+      >
+        Generate Report
+      </button>
+      
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {products.map((product) => (
           <div key={product._id} className="border rounded-md p-4 bg-white shadow hover:shadow-lg transition">
@@ -61,15 +133,21 @@ const ProductList = () => {
               <p className="text-gray-500 text-sm italic mt-2">{product.guidance}</p>
             )}
             <div className="mt-4">
+            <button
+               className="mr-2 text-green-500"
+               onClick={() => navigate(`/product/${product._id}`)}
+  >
+              View
+              </button>
               <button
                 className="mr-2 text-blue-500"
-                onClick={() => navigate(`/edit-product/${product._id}`)} // Use navigate instead of history.push
+                onClick={() => navigate(`/edit-product/${product._id}`)}
               >
                 Edit
               </button>
               <button
                 className="text-red-500"
-                onClick={() => deleteProduct(product._id)} // Delete product
+                onClick={() => deleteProduct(product._id)}
               >
                 Delete
               </button>
