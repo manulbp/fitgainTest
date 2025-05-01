@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
+
+
 const Home = () => {
   const [products, setProducts] = useState([]);
   const location = useLocation();
@@ -72,6 +74,11 @@ const ProductCard = ({ product }) => (
     >
       Order
     </button>
+
+    <Link to={`/product/${product._id}`}>
+    <button className="mt-2 text-sm text-blue-500 hover:underline">View Details</button>
+    </Link>
+
     
   </div>
 );
