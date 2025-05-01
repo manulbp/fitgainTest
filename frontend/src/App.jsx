@@ -9,6 +9,7 @@ import Footer from '../component/Footer';
 import Orders from '../pages/Orders';
 import ProductList from '../pages/Productlist';
 import EditProduct from '../pages/EditProduct';  // Import your new EditProduct page
+import ProductDetail from '../pages/Productdetail';
 
 export default function App() {
   return (
@@ -23,6 +24,7 @@ export default function App() {
         <Route path="/contact" element={<ContactUs />} />
         <Route path="/orders" element={<Orders />} />
         <Route path="/products" element={<ProductList />} />
+        <Route path="/product/:pid" element={<ProductDetail />} />
         <Route path="/edit-product/:pid" element={<EditProduct />} /> {/* Add the EditProduct route */}
 
       </Routes>
