@@ -86,7 +86,7 @@ const Product = () => {
       }
 
       // Navigate to Home page with product data passed via state
-      navigate('/', { state: { newProduct: productData } });
+      navigate('/', { state: { newProduct: data.product } });
 
     } catch (error) {
       console.error("Error:", error);
