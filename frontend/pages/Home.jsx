@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
-
-
 const Home = () => {
   const [products, setProducts] = useState([]);
   const location = useLocation();
@@ -22,9 +20,14 @@ const Home = () => {
     fetchProducts();
   }, []);
 
-  const displayProducts = newProduct
+  // Add newProduct to the list if it exists
+  const allProducts = newProduct
     ? [newProduct, ...products.filter(p => p._id !== newProduct._id)]
     : products;
+  
+  // Filter products by category
+  const equipmentProducts = allProducts.filter(product => product.category === 'Equipment');
+  const supplementProducts = allProducts.filter(product => product.category === 'Supplement');
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-50 px-6 py-8">
@@ -35,13 +38,32 @@ const Home = () => {
         </p>
       </header>
 
-      <section>
-        <h2 className="text-2xl font-semibold mb-6 text-gray-800">Explore Our Products</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
-          {displayProducts.map((product, index) => (
-            <ProductCard key={index} product={product} />
-          ))}
-        </div>
+      {/* Equipment Section */}
+      <section className="mb-10">
+        <h2 className="text-2xl font-semibold mb-6 text-gray-800">Fitness Equipment</h2>
+        {equipmentProducts.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
+            {equipmentProducts.map((product, index) => (
+              <ProductCard key={`equipment-${index}`} product={product} />
+            ))}
+          </div>
+        ) : (
+          <p className="text-gray-500 text-center">No equipment products available yet.</p>
+        )}
+      </section>
+
+      {/* Supplements Section */}
+      <section className="mb-10">
+        <h2 className="text-2xl font-semibold mb-6 text-gray-800">Supplements</h2>
+        {supplementProducts.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
+            {supplementProducts.map((product, index) => (
+              <ProductCard key={`supplement-${index}`} product={product} />
+            ))}
+          </div>
+        ) : (
+          <p className="text-gray-500 text-center">No supplement products available yet.</p>
+        )}
       </section>
 
       <footer className="mt-12 p-4 text-center text-gray-500 text-sm border-t border-gray-300">
@@ -65,8 +87,6 @@ const ProductCard = ({ product }) => (
         <p className="text-xs mt-2 italic text-gray-600">Guidance: {product.guidance}</p>
       )}
     </div>
-
-   
     
     <button
       className="mt-4 bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-200"
@@ -76,10 +96,8 @@ const ProductCard = ({ product }) => (
     </button>
 
     <Link to={`/product/${product._id}`}>
-    <button className="mt-2 text-sm text-blue-500 hover:underline">View Details</button>
+      <button className="mt-2 text-sm text-blue-500 hover:underline">View Details</button>
     </Link>
-
-    
   </div>
 );
 
