@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import './Product.css';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useNavigate } from 'react-router-dom';
 
 const Product = () => {
-  const navigate = useNavigate(); // Initialize the navigation hook
+  const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -85,8 +84,8 @@ const Product = () => {
         throw new Error(data.error || "Failed to add product");
       }
 
-      // Navigate to Home page with product data passed via state
       navigate('/', { state: { newProduct: data.product } });
+
 
     } catch (error) {
       console.error("Error:", error);
@@ -97,69 +96,73 @@ const Product = () => {
   };
 
   return (
-    <div className="max-w-lg mx-auto p-8 bg-gray-200 rounded-md shadow-sm mt-8">
-      <h1 className="text-xl text-gray-600 font-medium text-center mb-6">Add a New Product</h1>
-      <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-        <div className="flex flex-col gap-1 w-full">
-          <p className="text-sm text-gray-650 text-left mb-1 mt-0.5">Product Image:</p>
+    <div className="max-w-2xl mx-auto mt-12 px-6 py-10 bg-white rounded-xl shadow-lg border border-gray-200">
+      <h1 className="text-2xl font-semibold text-gray-700 text-center mb-8">Add a New Product</h1>
+
+      <form className="space-y-6" onSubmit={handleSubmit}>
+        {/* Image Upload */}
+        <div>
+          <label className="block text-sm font-medium text-gray-600 mb-1">Product Image</label>
           <input
             type="file"
-            id="image"
             onChange={handleFileChange}
-            className="w-full border border-gray-300 bg-white rounded px-3 py-2 text-sm file:mr-4 file:py-1 file:px-3 file:rounded file:border-0 file:text-sm file:bg-gray-100 file:text-gray-700"
+            className="block w-full text-sm text-gray-700 file:mr-4 file:py-1 file:px-4 file:rounded file:border-0 file:text-sm file:bg-gray-100 file:text-gray-600 hover:file:bg-gray-200"
           />
-          {formData.imagePreview && <img src={formData.imagePreview} alt="Preview" width="100" className="mt-2" />}
+          {formData.imagePreview && (
+            <img src={formData.imagePreview} alt="Preview" className="mt-4 rounded shadow-md w-40 h-40 object-cover" />
+          )}
         </div>
 
-        <div className="add-product-name flex-col mt-5">
-          <p>Product name:</p>
+        {/* Product Name */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Product Name</label>
           <input
             type="text"
             name="productname"
-            placeholder="Enter product name"
             value={formData.productname}
             onChange={handleChange}
             required
-            className='w-full border border-gray-300 bg-white rounded px-3 py-2 text-sm focus:outline-none focus:border-gray-400'
+            className="w-full px-4 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-400"
           />
         </div>
 
-        <div className="add-product-description flex-col mt-5">
-          <p>Product description:</p>
+        {/* Description */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
           <textarea
             name="description"
-            rows="6"
-            placeholder="Enter your description"
+            rows="4"
             value={formData.description}
             onChange={handleChange}
             required
-            className='w-full border border-gray-300 bg-white rounded px-3 py-2 text-sm focus:outline-none focus:border-gray-400'
-          ></textarea>
+            className="w-full px-4 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-400"
+          />
         </div>
 
-        <div className="add-category flex-col mt-5">
-          <p>Product category:</p>
+        {/* Category */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
           <select
             name="category"
             value={formData.category}
             onChange={handleChange}
             required
-            className='w-full border border-gray-300 bg-white rounded px-3 py-2 text-sm focus:outline-none focus:border-gray-400'
+            className="w-full px-4 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-400"
           >
             <option value="">Select</option>
-            <option value="equipment">Equipment</option>
-            <option value="nutrient">Supplement</option>
+            <option value="Equipment">Equipment</option>
+            <option value="Supplement">Supplement</option>
           </select>
         </div>
 
-        <div className="add-condition flex-col mt-5">
-          <p>Product condition:</p>
+        {/* Condition */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Condition</label>
           <select
             name="condition"
             value={formData.condition}
             onChange={handleChange}
-            required
-            className='w-full border border-gray-300 bg-white rounded px-3 py-2 text-sm focus:outline-none focus:border-gray-400'
+            className="w-full px-4 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-400"
           >
             <option value="">Select</option>
             <option value="New">Brand-new</option>
@@ -167,8 +170,9 @@ const Product = () => {
           </select>
         </div>
 
-        <div className="add-count flex-col mt-5">
-          <p>Inventory level:</p>
+        {/* Quantity */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Inventory Level</label>
           <input
             type="number"
             name="quantity"
@@ -176,42 +180,49 @@ const Product = () => {
             onChange={handleChange}
             required
             min="1"
-            className='w-full border border-gray-300 bg-white rounded px-3 py-2 text-sm focus:outline-none focus:border-gray-400'
+            className="w-full px-4 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-400"
           />
         </div>
 
-        <div className="add-price flex-col mt-5">
-          <p>Product price:</p>
+        {/* Price */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Price</label>
           <input
             type="number"
             name="price"
             value={formData.price}
             onChange={handleChange}
             required
-            className='w-full border border-gray-300 bg-white rounded px-3 py-2 text-sm focus:outline-none focus:border-gray-400'
+            className="w-full px-4 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-400"
           />
         </div>
 
-        <div className="add-nutritional-guidance flex-col mt-5">
-          <p>Nutritional guidance (regarding supplements):</p>
+        {/* Guidance */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Nutritional Guidance</label>
           <textarea
             name="guidance"
-            rows="6"
-            placeholder="Type here"
+            rows="3"
             value={formData.guidance}
             onChange={handleChange}
-            className='w-full border border-gray-300 bg-white rounded px-3 py-2 text-sm focus:outline-none focus:border-gray-400'
-          ></textarea>
+            className="w-full px-4 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-400"
+          />
         </div>
 
+        {/* Error Message */}
         {errorMessage && <p className="text-red-600 text-sm">{errorMessage}</p>}
 
+        {/* Submit Button */}
         <button
           type="submit"
-          className="w-full bg-blue-300 text-black py-2 px-4 rounded hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed text-center mt-4"
+          className={`w-full py-2 px-4 rounded-lg text-white font-medium transition ${
+            loading
+              ? 'bg-gray-400 cursor-not-allowed'
+              : 'bg-gray-700 hover:bg-gray-800'
+          }`}
           disabled={loading}
         >
-          {loading ? "Adding..." : "Add Product"}
+          {loading ? 'Adding...' : 'Add Product'}
         </button>
       </form>
     </div>
