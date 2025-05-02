@@ -40,6 +40,8 @@ const Home = () => {
 
       {/* Equipment Section */}
       <section className="mb-10">
+      <h2 className="text-2xl font-semibold mb-6 text-gray-600">Explore Our Products</h2>
+        <div className="border-b border-gray-400 mb-8"></div>
         <h2 className="text-2xl font-semibold mb-6 text-gray-800">Fitness Equipment</h2>
         {equipmentProducts.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -66,7 +68,7 @@ const Home = () => {
         )}
       </section>
 
-      <footer className="mt-12 p-4 text-center text-gray-500 text-sm border-t border-gray-300">
+      <footer className="mt-12 p-4 text-center text-gray-500 text-sm border-t border-gray-400">
         © {new Date().getFullYear()} FitGear. All rights reserved.
       </footer>
     </div>
