@@ -20,13 +20,13 @@ export default function Header() {
         </nav>
         
         {/* Right side icons and button */}
-        <div className="flex items-center gap-4">
-          {/* Search icon */}
-          <button className="p-2" aria-label="Search">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
-          </button>
+       <div className="flex items-center gap-4">
+          {/* Search bar */}
+          <input
+            type="text"
+            placeholder="Search products..."
+            className="px-3 py-1 rounded border border-gray-800 text-sm w-40 md:w-60"
+          />
           
           {/* Cart icon */}
           <Link to="/cart" className="p-2" aria-label="Cart">
