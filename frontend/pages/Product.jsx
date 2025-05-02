@@ -115,7 +115,7 @@ const Product = () => {
 
         {/* Product Name */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Product Name</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Product Name:</label>
           <input
             type="text"
             name="productname"
@@ -128,7 +128,7 @@ const Product = () => {
 
         {/* Description */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Description:</label>
           <textarea
             name="description"
             rows="4"
@@ -141,7 +141,7 @@ const Product = () => {
 
         {/* Category */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Category:</label>
           <select
             name="category"
             value={formData.category}
@@ -157,7 +157,7 @@ const Product = () => {
 
         {/* Condition */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Condition</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Condition:</label>
           <select
             name="condition"
             value={formData.condition}
@@ -172,7 +172,7 @@ const Product = () => {
 
         {/* Quantity */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Inventory Level</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Inventory Level:</label>
           <input
             type="number"
             name="quantity"
@@ -186,7 +186,7 @@ const Product = () => {
 
         {/* Price */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Price</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Price:</label>
           <input
             type="number"
             name="price"
@@ -199,7 +199,7 @@ const Product = () => {
 
         {/* Guidance */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Nutritional Guidance</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Nutritional Guidance:</label>
           <textarea
             name="guidance"
             rows="3"
