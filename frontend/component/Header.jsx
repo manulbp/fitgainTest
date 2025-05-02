@@ -37,7 +37,8 @@ export default function Header() {
               placeholder="Search..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10 pr-3 py-1 rounded border border-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-600 text-sm"
+             className="pl-10 pr-3 py-1 rounded-full border border-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-600 text-sm"
+
             />
             <button type="submit" className="absolute left-2 top-1.5 text-gray-700">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
