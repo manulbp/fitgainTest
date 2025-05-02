@@ -13,10 +13,10 @@ export default function Header() {
   };
 
   return (
-    <header className="bg-gray-300 shadow-sm">
-      <div className="flex justify-between items-center max-w-6xl mx-auto p-4">
+    <header className="bg-gray-400 shadow-sm">
+      <div className="flex justify-between items-center max-w-6xl mx-auto p-5">
         {/* Logo */}
-        <Link to="/" className="text-2xl font-bold text-gray-800">Fit-Gain</Link>
+        <Link to="/" className="text-3xl font-bold text-gray-800"><i>Fit-Gain</i></Link>
         
         {/* Navigation */}
         <nav className="hidden md:block">
@@ -37,7 +37,7 @@ export default function Header() {
               placeholder="Search..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-             className="pl-10 pr-3 py-1 rounded-full border border-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-600 text-sm"
+              className="pl-10 pr-3 py-1 rounded-full border border-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-600 text-sm"
 
             />
             <button type="submit" className="absolute left-2 top-1.5 text-gray-700">
@@ -55,7 +55,7 @@ export default function Header() {
           </Link>
           
           {/* Sign in button */}
-          <Link to="/signin" className="ml-2 px-4 py-1 border border-gray-400 rounded text-sm">
+          <Link to="/signin" className="ml-2 px-4 py-1 border border-gray-600 rounded text-sm">
             Sign in
           </Link>
         </div>
