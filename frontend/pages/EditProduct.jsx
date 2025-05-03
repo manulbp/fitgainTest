@@ -67,7 +67,8 @@ const EditProduct = () => {
 
   return (
     <div className="max-w-4xl mx-auto mt-10 p-4">
-      <h1 className="text-2xl font-semibold mb-6 text-center">Edit Product</h1>
+      <div className="max-w-8xl mx-auto mt-10 p-10 bg-gray-200 min-h-screen rounded-lg">
+      <h1 className="text-2xl font-semibold mb-6 text-center">Edit Product Details</h1>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
           <label className="block text-sm font-semibold" htmlFor="productname">Product Name</label>
@@ -145,9 +146,10 @@ const EditProduct = () => {
         </div>
 
         <div className="mt-6 text-center">
-          <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">Update Product</button>
+          <button type="submit" className="bg-blue-300 text-black px-4 py-2 rounded hover:bg-blue-400">Update Product</button>
         </div>
       </form>
+    </div>
     </div>
   );
 };
