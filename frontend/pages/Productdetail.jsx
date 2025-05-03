@@ -24,7 +24,15 @@ const ProductDetail = () => {
 
   return (
     <div className=" bg-gray-200 px-6 py-8">
-    <div className="max-w-3xl mx-auto p-6 mt-10 bg-white rounded-lg shadow-md">
+    <div className="max-w-2xl mx-auto p-7 mt-10 bg-white rounded-lg shadow-md">
+    {product.image && (
+  <img
+    src={`http://localhost:5080/${product.image}`}  // Adjust based on how you're serving static files
+    alt={product.productname}
+    className="mb-4 rounded-lg shadow w-64 h-64 object-cover"
+  />
+)}
+
       <h1 className="text-2xl font-bold mb-4">{product.productname}</h1>
       <p className="mb-2"><strong>Description:</strong> {product.description}</p>
       <p className="mb-2"><strong>Category:</strong> {product.category}</p>
