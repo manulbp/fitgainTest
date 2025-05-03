@@ -96,7 +96,7 @@ const Product = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto mt-12 px-6 py-10 bg-gray-100 rounded-xl shadow-lg border border-gray-200">
+    <div className="max-w-2xl mx-auto mt-12 px-6 py-10 bg-gray-200 rounded-xl shadow-lg border border-gray-200">
       <h1 className="text-2xl font-semibold text-gray-700 text-center mb-8">Add a New Product</h1>
 
       <form className="space-y-6" onSubmit={handleSubmit}>
