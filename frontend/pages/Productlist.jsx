@@ -110,12 +110,14 @@ const ProductList = () => {
 
   return (
     <div className="max-w-4xl mx-auto mt-10 p-4">
+      <div className="max-w-8xl mx-auto mt-10 p-10 bg-gray-200 min-h-screen rounded-lg">
+
       <h1 className="text-2xl font-semibold mb-6 text-center">Product List</h1>
       
       {/* Button to generate report */}
       <button
         onClick={generateReport}
-        className="mb-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
+        className="mb-4 bg-blue-300 text-black py-2 px-4 rounded hover:bg-blue-400"
       >
         Generate Report
       </button>
@@ -132,29 +134,31 @@ const ProductList = () => {
             {product.guidance && (
               <p className="text-gray-500 text-sm italic mt-2">{product.guidance}</p>
             )}
-            <div className="mt-4">
-            <button
-               className="mr-2 text-green-500"
-               onClick={() => navigate(`/product/${product._id}`)}
+            <div className="mt-4 flex space-x-2">
+  <button
+    className="bg-gray-400 text-white font-semibold py-2 px-6 rounded-3xl shadow hover:bg-gray-500 transition-all duration-200"
+    onClick={() => navigate(`/product/${product._id}`)}
   >
-              View
-              </button>
-              <button
-                className="mr-2 text-blue-500"
-                onClick={() => navigate(`/edit-product/${product._id}`)}
-              >
-                Edit
-              </button>
-              <button
-                className="text-red-500"
-                onClick={() => deleteProduct(product._id)}
-              >
-                Delete
-              </button>
-            </div>
+    View
+  </button>
+  <button
+    className="bg-gray-500 text-white font-semibold py-2 px-6 rounded-3xl shadow hover:bg-gray-600 transition-all duration-200"
+    onClick={() => navigate(`/edit-product/${product._id}`)}
+  >
+    Edit
+  </button>
+  <button
+    className="bg-gray-600 text-white font-semibold py-2 px-6 rounded-3xl shadow hover:bg-gray-700 transition-all duration-200"
+    onClick={() => deleteProduct(product._id)}
+  >
+    Delete
+  </button>
+</div>
+
           </div>
         ))}
       </div>
+    </div>
     </div>
   );
 };
