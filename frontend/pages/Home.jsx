@@ -82,7 +82,7 @@ const ProductCard = ({ product }) => (
       <p className="text-sm text-gray-600 mb-3 line-clamp-3">{product.description}</p>
       <div className="flex justify-between text-sm text-gray-700 font-medium mb-2">
         <span>Category: <span className="font-normal">{product.category}</span></span>
-        <span className="text-green-500">${product.price}</span>
+        <span className="text-blue-400">${product.price}</span>
       </div>
       <p className="text-xs text-gray-500">Condition: {product.condition}</p>
       {product.guidance && (
