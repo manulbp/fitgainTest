@@ -36,6 +36,8 @@ const Product = () => {
     if (file) {
       const previewURL = URL.createObjectURL(file);
       setFormData({ ...formData, image: file, imagePreview: previewURL });
+    } else {
+      setFormData({ ...formData, image: null, imagePreview: null });
     }
   };
 
@@ -44,8 +46,14 @@ const Product = () => {
     setLoading(true);
     setErrorMessage(null);
 
-    if (!formData.productname || !formData.description || !formData.category || !formData.quantity || !formData.price) {
-      setErrorMessage("All required fields must be filled");
+    if (!formData.productname || !formData.description || !formData.category || !formData.quantity || !formData.price || !formData.image) {
+      setErrorMessage("All required fields, including image, must be filled");
+      setLoading(false);
+      return;
+    }
+
+    if (parseInt(formData.quantity) <= 0) {
+      setErrorMessage("Quantity must be a positive number");
       setLoading(false);
       return;
     }
@@ -56,23 +64,20 @@ const Product = () => {
       return;
     }
 
-    const productData = {
-      productname: formData.productname,
-      description: formData.description,
-      category: formData.category,
-      condition: formData.condition,
-      quantity: parseInt(formData.quantity),
-      price: parseFloat(formData.price),
-      guidance: formData.guidance,
-    };
+    const productData = new FormData();
+    productData.append('productname', formData.productname);
+    productData.append('description', formData.description);
+    productData.append('category', formData.category);
+    productData.append('condition', formData.condition || 'New');
+    productData.append('quantity', parseInt(formData.quantity));
+    productData.append('price', parseFloat(formData.price));
+    productData.append('guidance', formData.guidance || '');
+    productData.append('image', formData.image);
 
     try {
       const res = await fetch("http://localhost:5080/backend/product/add", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(productData),
+        body: productData,
       });
 
       if (!res.ok) {
@@ -84,7 +89,7 @@ const Product = () => {
         throw new Error(data.error || "Failed to add product");
       }
 
-      navigate('/', { state: { newProduct: data.product } });
+      navigate('/', { state: { newProduct: { ...formData, image: data.product.image, _id: data.product._id } } });
 
 
     } catch (error) {
@@ -107,7 +112,9 @@ const Product = () => {
           <input
             type="file"
             onChange={handleFileChange}
+            accept="image/jpeg,image/png,image/gif,image/webp,image/svg+xml"
             className="block w-full text-sm text-gray-700 file:mr-4 file:py-1 file:px-4 file:rounded file:border-0 file:text-sm file:bg-gray-100 file:text-gray-600 hover:file:bg-gray-200"
+            required
           />
           {formData.imagePreview && (
             <img src={formData.imagePreview} alt="Preview" className="mt-4 rounded shadow-md w-40 h-40 object-cover" />
@@ -163,6 +170,7 @@ const Product = () => {
             name="condition"
             value={formData.condition}
             onChange={handleChange}
+            required
             className="w-full px-4 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-400"
           >
             <option value="">Select</option>
@@ -194,6 +202,8 @@ const Product = () => {
             value={formData.price}
             onChange={handleChange}
             required
+            min="0.01"
+            step="0.01"
             className="w-full px-4 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-400"
           />
         </div>
