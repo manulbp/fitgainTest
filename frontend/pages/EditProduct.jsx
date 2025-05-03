@@ -227,7 +227,7 @@ const EditProduct = () => {
           <div className="mt-6 text-center">
             <button 
               type="submit" 
-              className={`bg-blue-300 text-black px-4 py-2 rounded hover:bg-blue-400 ${submitLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+              className={`bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-800 ${submitLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
               disabled={submitLoading}
             >
               {submitLoading ? 'Updating...' : 'Update Product'}
