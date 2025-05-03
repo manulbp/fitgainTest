@@ -56,7 +56,7 @@ export default function Header() {
           
           {/* Sign in button */}
           <Link to="/signin" className="ml-2 px-4 py-1 border border-gray-600 rounded text-sm">
-            Sign in
+            Sign up
           </Link>
         </div>
       </div>
