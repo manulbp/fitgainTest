@@ -23,6 +23,7 @@ const ProductDetail = () => {
   if (!product) return <div className="text-center mt-10">Loading product...</div>;
 
   return (
+    <div className=" bg-gray-200 px-6 py-8">
     <div className="max-w-3xl mx-auto p-6 mt-10 bg-white rounded-lg shadow-md">
       <h1 className="text-2xl font-bold mb-4">{product.productname}</h1>
       <p className="mb-2"><strong>Description:</strong> {product.description}</p>
@@ -38,6 +39,7 @@ const ProductDetail = () => {
       >
         Order
       </button>
+    </div>
     </div>
   );
 };
