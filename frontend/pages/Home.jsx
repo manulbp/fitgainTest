@@ -30,7 +30,7 @@ const Home = () => {
   const supplementProducts = allProducts.filter(product => product.category === 'Supplement');
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-50 px-6 py-8">
+    <div className="flex flex-col min-h-screen bg-gray-200 px-6 py-8">
       <header className="bg-gradient-to-r from-gray-600 to-gray-700 text-white p-6 rounded-lg shadow mb-8">
         <h1 className="text-3xl font-bold text-center">🏋️‍♂️ Fit-Gain Store</h1>
         <p className="text-center mt-2 text-sm">
