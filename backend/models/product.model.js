@@ -8,7 +8,7 @@ const ProductSchema = new mongoose.Schema({
   quantity: { type: Number, required: true },
   price: { type: Number, required: true },
   guidance: { type: String, required: false },
-  // image: { type: String, required: true },  // Store image path
+  image: { type: String, required: true },
 });
 
 const Product = mongoose.model("Product", ProductSchema);
