@@ -24,6 +24,15 @@ const AdminDashboard = () => {
                 <Button variant="contained" color="secondary" onClick={() => setswtich(2)}>
                     Checkout Review
                 </Button>
+                <Button variant="contained" color="success" onClick={() => setswtich(2)}>
+                    Add Products
+                </Button>
+                <Button variant="contained" color="info" onClick={() => setswtich(2)}>
+                    Product list
+                </Button>
+                <Button variant="contained" color="warning" onClick={() => setswtich(2)}>
+                    Customer Support
+                </Button>
             </Box>
             <Box
                 sx={{
