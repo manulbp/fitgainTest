@@ -73,7 +73,7 @@ const SearchResults = () => {
               )}
               <div className="mt-4">
                 <button
-                  className="mr-2 text-green-500"
+                   className="mt-4 bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded-lg"
                   onClick={() => navigate(`/product/${product._id}`)}
                 >
                   View
