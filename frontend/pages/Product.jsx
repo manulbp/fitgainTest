@@ -96,7 +96,7 @@ const Product = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-200 py-10 px-4">
+    <div className="min-h-screen bg-gray-100 py-10 px-4">
     <div className="max-w-2xl mx-auto mt-12 px-6 py-10 bg-gray-300 rounded-xl shadow-lg border border-gray-200">
       <h1 className="text-2xl font-semibold text-gray-700 text-center mb-8">Add a New Product</h1>
 
