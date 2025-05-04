@@ -69,7 +69,7 @@ const ProductDetail = () => {
           </button>
           <span className="px-4 py-1">{selectedQuantity}</span>
           <button 
-            className="px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded-r-lg"
+            className="px-3 py-1 bg-gray-300 hover:bg-gray-400 rounded-r-lg"
             onClick={increaseQuantity}
             disabled={product && selectedQuantity >= product.quantity}
           >
@@ -78,7 +78,7 @@ const ProductDetail = () => {
         </div>
 
         <button
-          className="bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-lg"
+          className="bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-3xl"
           onClick={handleAddToCart}
         >
           Add to cart
