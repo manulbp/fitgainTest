@@ -117,15 +117,8 @@ const ProductCard = ({ product }) => (
       )}
     </div>
     
-    <button
-      className="mt-4 bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-200"
-      onClick={() => alert(`Order placed for ${product.productname}`)}
-    >
-      Add to cart
-    </button>
-
     <Link to={`/product/${product._id}`}>
-      <button className="mt-2 bg-gray-200 text-sm text-black hover:underline py-2 px-3 rounded-lg transition duration-20">View Details</button>
+      <button className="mt-2 bg-gray-300 text-sm text-black hover:bg-gray-400 py-2 px-3 rounded-lg transition duration-20">View Details</button>
     </Link>
   </div>
 );
