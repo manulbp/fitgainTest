@@ -56,7 +56,7 @@ const ProductDetail = () => {
       <p className="mb-2"><strong>Condition:</strong> {product.condition}</p>
       <p className="mb-2"><strong>Quantity:</strong> {product.quantity}</p>
       <p className="mb-2"><strong>Price:</strong> ${product.price}</p>
-      {product.guidance && <p className="mb-2"><strong>Guidance:</strong> {product.guidance}</p>}
+      {product.guidance && <p className="mb-5"><strong>Guidance:</strong> {product.guidance}</p>}
 
       <div className="flex items-center mt-4">
         <div className="flex items-center border border-gray-300 rounded-lg mr-4">
@@ -69,7 +69,7 @@ const ProductDetail = () => {
           </button>
           <span className="px-4 py-1">{selectedQuantity}</span>
           <button 
-            className="px-3 py-1 bg-gray-300 hover:bg-gray-400 rounded-r-lg"
+            className="px-3 py-1 bg-gray-300 hover:bg-gray-400 rounded-r-lg "
             onClick={increaseQuantity}
             disabled={product && selectedQuantity >= product.quantity}
           >
