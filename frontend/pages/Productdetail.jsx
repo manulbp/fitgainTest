@@ -52,7 +52,7 @@ const ProductDetail = () => {
     <div className="bg-gray-200 min-h-screen py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-3xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
         {/* Centered Product Image */}
-        <div className="flex justify-center py-8 bg-gray-50">
+        <div className="flex justify-center py-8 bg-gray-200">
           {product.image ? (
             <img
               src={`http://localhost:5080/${product.image}`}
