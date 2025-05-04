@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { assets } from '../src/assets/assets'; // Import assets for fallback image
 
 const SearchResults = () => {
   const [products, setProducts] = useState([]);
@@ -28,7 +29,18 @@ const SearchResults = () => {
           product.category.toLowerCase().includes(searchQuery.toLowerCase())
         );
         
-        setProducts(filteredProducts);
+        // Process products with image paths
+        const processedProducts = filteredProducts.map(product => ({
+          ...product,
+          image: product.image ? `http://localhost:5080/${product.image}` : null,
+          price: parseFloat(product.price) || 0,
+          quantity: parseInt(product.quantity) || 0,
+          category: product.category
+            ? product.category.charAt(0).toUpperCase() + product.category.slice(1).toLowerCase()
+            : 'Unknown',
+        }));
+        
+        setProducts(processedProducts);
       } catch (err) {
         console.error(err);
         setError(err.message);
@@ -62,18 +74,30 @@ const SearchResults = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {products.map((product) => (
             <div key={product._id} className="border rounded-md p-4 bg-white shadow hover:shadow-lg transition">
+              {/* Image Display */}
+              <div className="mb-4 flex justify-center">
+                <img
+                  src={product.image || assets.noImage}
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = assets.noImage;
+                  }}
+                  alt={product.productname || 'Product'}
+                  className="w-32 h-32 object-cover rounded-lg"
+                />
+              </div>
               <h2 className="text-xl font-bold mb-2">{product.productname}</h2>
               <p className="text-gray-600 mb-2">{product.description}</p>
               <p className="text-gray-500 mb-1">Category: {product.category}</p>
               <p className="text-gray-500 mb-1">Condition: {product.condition}</p>
               <p className="text-gray-500 mb-1">Quantity: {product.quantity}</p>
-              <p className="text-gray-500 mb-1">Price: ${product.price}</p>
+              <p className="text-gray-500 mb-1">Price: ${parseFloat(product.price).toFixed(2)}</p>
               {product.guidance && (
                 <p className="text-gray-500 text-sm italic mt-2">{product.guidance}</p>
               )}
               <div className="mt-4">
                 <button
-                   className="mt-4 bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded-lg"
+                  className="mt-4 bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded-lg"
                   onClick={() => navigate(`/product/${product._id}`)}
                 >
                   View
