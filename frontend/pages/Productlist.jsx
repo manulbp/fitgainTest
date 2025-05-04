@@ -43,66 +43,113 @@ const ProductList = () => {
     }
   };
 
-  const generateReport = () => {
-    const doc = new jsPDF();
+  // Enhanced generateReport function in ProductList.jsx
+const generateReport = async () => {
+  const doc = new jsPDF();
   
-    doc.setFontSize(16);
-    doc.text('Product Report', 20, 20);
+  doc.setFontSize(16);
+  doc.text('Product Report', 20, 20);
   
-    let yPosition = 30;
-    products.forEach((product, index) => {
-      doc.setFontSize(12);
-      doc.text(`Product #${index + 1}`, 20, yPosition);
-      yPosition += 10;
+  let yPosition = 30;
   
-      // Draw a horizontal line for product separation
-      doc.setLineWidth(0.5);
-      doc.line(20, yPosition, 190, yPosition);
-      yPosition += 5;
-  
-      // Product details in an orderly manner
-      doc.text(`Name:`, 20, yPosition);
-      doc.text(product.productname, 50, yPosition);
-      yPosition += 8;
-  
-      doc.text(`Description:`, 20, yPosition);
-      doc.text(product.description, 50, yPosition, { maxWidth: 140 });
-      yPosition += 12;
-  
-      doc.text(`Category:`, 20, yPosition);
-      doc.text(product.category, 50, yPosition);
-      yPosition += 8;
-  
-      doc.text(`Condition:`, 20, yPosition);
-      doc.text(product.condition, 50, yPosition);
-      yPosition += 8;
-  
-      doc.text(`Quantity:`, 20, yPosition);
-      doc.text(`${product.quantity}`, 50, yPosition);
-      yPosition += 8;
-  
-      doc.text(`Price:`, 20, yPosition);
-      doc.text(`$${product.price}`, 50, yPosition);
-      yPosition += 8;
-  
-      doc.text(`Guidance:`, 20, yPosition);
-      doc.text(product.guidance || 'N/A', 50, yPosition);
-      yPosition += 12;
-  
-      // Draw a horizontal line to separate products
-      doc.setLineWidth(0.5);
-      doc.line(20, yPosition, 190, yPosition);
-      yPosition += 5;
-  
-      // If the page is full, add a new page
-      if (yPosition > 270) {
-        doc.addPage();
-        yPosition = 20;
+  // Process each product
+  for (let i = 0; i < products.length; i++) {
+    const product = products[i];
+    
+    // Add new page if needed
+    if (yPosition > 240) {
+      doc.addPage();
+      yPosition = 20;
+    }
+    
+    doc.setFontSize(12);
+    doc.text(`Product #${i + 1}`, 20, yPosition);
+    yPosition += 10;
+    
+    // Draw a horizontal line for product separation
+    doc.setLineWidth(0.5);
+    doc.line(20, yPosition, 190, yPosition);
+    yPosition += 10;
+    
+    // Add product image
+    if (product.image) {
+      try {
+        // Create a new image element to load the image
+        const img = new Image();
+        img.crossOrigin = "Anonymous"; // Enable CORS if needed
+        
+        // Create a promise to wait for the image to load
+        await new Promise((resolve, reject) => {
+          img.onload = resolve;
+          img.onerror = reject;
+          img.src = `http://localhost:5080/${product.image}`;
+        });
+        
+        // Calculate image dimensions (maintain aspect ratio)
+        const imgWidth = 60;
+        const imgHeight = 60;
+        
+        // Add image to PDF
+        doc.addImage(img, 'JPEG', 20, yPosition, imgWidth, imgHeight);
+        
+        
+        const textX = 90;
+        let textY = yPosition + 5;
+        
+        // Product details
+        doc.text(`Name: ${product.productname}`, textX, textY);
+        textY += 8;
+        
+        doc.text(`Category: ${product.category}`, textX, textY);
+        textY += 8;
+        
+        doc.text(`Condition: ${product.condition}`, textX, textY);
+        textY += 8;
+        
+        doc.text(`Quantity: ${product.quantity}`, textX, textY);
+        textY += 8;
+        
+        doc.text(`Price: $${product.price}`, textX, textY);
+        
+        // Move position below the image for description
+        yPosition += imgHeight + 10;
+        
+      } catch (error) {
+        console.error("Error loading image:", error);
+        // If image loading fails, continue with just text
+        doc.text(`Name: ${product.productname}`, 20, yPosition);
+        yPosition += 8;
       }
-    });
+    } else {
+      // No image, just add text
+      doc.text(`Name: ${product.productname}`, 20, yPosition);
+      yPosition += 8;
+    }
+    
+    // Description (may be multi-line)
+    doc.text(`Description:`, 20, yPosition);
+    yPosition += 8;
+    
+    const splitDescription = doc.splitTextToSize(product.description, 170);
+    doc.text(splitDescription, 20, yPosition);
+    yPosition += splitDescription.length * 7;
+    
+    // Guidance (if available)
+    if (product.guidance) {
+      doc.text(`Guidance:`, 20, yPosition);
+      yPosition += 8;
+      
+      const splitGuidance = doc.splitTextToSize(product.guidance, 170);
+      doc.text(splitGuidance, 20, yPosition);
+      yPosition += splitGuidance.length * 7;
+    }
+    
+    // Space between products
+    yPosition += 15;
+  }
   
-    doc.save('product_report.pdf');
-  };
+  doc.save('product_report.pdf');
+};
   
   useEffect(() => {
     fetchProducts();
