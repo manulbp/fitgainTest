@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 const ProductDetail = () => {
   const { pid } = useParams();
   const [product, setProduct] = useState(null);
+  const [selectedQuantity, setSelectedQuantity] = useState(1);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -19,6 +20,22 @@ const ProductDetail = () => {
 
     fetchProduct();
   }, [pid]);
+
+  const increaseQuantity = () => {
+    if (product && selectedQuantity < product.quantity) {
+      setSelectedQuantity(prevQuantity => prevQuantity + 1);
+    }
+  };
+
+  const decreaseQuantity = () => {
+    if (selectedQuantity > 1) {
+      setSelectedQuantity(prevQuantity => prevQuantity - 1);
+    }
+  };
+
+  const handleAddToCart = () => {
+    alert(`Order placed for ${selectedQuantity} ${selectedQuantity > 1 ? 'units' : 'unit'} of ${product.productname}`);
+  };
 
   if (!product) return <div className="text-center mt-10">Loading product...</div>;
 
@@ -41,12 +58,32 @@ const ProductDetail = () => {
       <p className="mb-2"><strong>Price:</strong> ${product.price}</p>
       {product.guidance && <p className="mb-2"><strong>Guidance:</strong> {product.guidance}</p>}
 
-      <button
-        className="mt-4 bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-lg"
-        onClick={() => alert(`Order placed for ${product.productname}`)}
-      >
-        Add to cart
-      </button>
+      <div className="flex items-center mt-4">
+        <div className="flex items-center border border-gray-300 rounded-lg mr-4">
+          <button 
+            className="px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded-l-lg" 
+            onClick={decreaseQuantity}
+            disabled={selectedQuantity <= 1}
+          >
+            -
+          </button>
+          <span className="px-4 py-1">{selectedQuantity}</span>
+          <button 
+            className="px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded-r-lg"
+            onClick={increaseQuantity}
+            disabled={product && selectedQuantity >= product.quantity}
+          >
+            +
+          </button>
+        </div>
+
+        <button
+          className="bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-lg"
+          onClick={handleAddToCart}
+        >
+          Add to cart
+        </button>
+      </div>
     </div>
     </div>
   );
