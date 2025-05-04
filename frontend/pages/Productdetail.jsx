@@ -45,7 +45,7 @@ const ProductDetail = () => {
         className="mt-4 bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-lg"
         onClick={() => alert(`Order placed for ${product.productname}`)}
       >
-        Order
+        Add to cart
       </button>
     </div>
     </div>
