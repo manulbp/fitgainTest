@@ -23,6 +23,7 @@ export default function Header() {
           <ul className="flex gap-6">
             <li><Link to="/" className="text-gray-800 hover:text-gray-900">Home</Link></li>
             <li><Link to="/product" className="text-gray-800 hover:text-gray-900">Products</Link></li>
+            <li><Link to="/items" className="text-gray-800 hover:text-gray-900">Fitness Collection</Link></li>
             <li><Link to="/orders" className="text-gray-800 hover:text-gray-900">Orders</Link></li>
             <li><Link to="/contact" className="text-gray-800 hover:text-gray-900">Contact Us</Link></li>
             
