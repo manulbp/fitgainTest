@@ -97,7 +97,7 @@ const SearchResults = () => {
               )}
               <div className="mt-4">
                 <button
-                  className="mt-4 bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded-lg"
+                  className="mt-4 bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded-3xl"
                   onClick={() => navigate(`/product/${product._id}`)}
                 >
                   View
