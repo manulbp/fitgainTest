@@ -11,6 +11,8 @@ import ProductList from '../pages/Productlist';
 import EditProduct from '../pages/EditProduct';  // Import your new EditProduct page
 import ProductDetail from '../pages/Productdetail';
 import SearchResults from '../pages/SearchResults';
+import Items from '../pages/Items';
+
 
 export default function App() {
   return (
@@ -28,6 +30,8 @@ export default function App() {
         <Route path="/product/:pid" element={<ProductDetail />} />
         <Route path="/edit-product/:pid" element={<EditProduct />} /> {/* Add the EditProduct route */}
         <Route path="/search" element={<SearchResults />} />
+        <Route path="/items" element={<Items />} />
+        
 
       </Routes>
       
