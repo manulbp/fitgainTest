@@ -121,7 +121,7 @@ const ProductCard = ({ product }) => (
       className="mt-4 bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-200"
       onClick={() => alert(`Order placed for ${product.productname}`)}
     >
-      Order
+      Add to cart
     </button>
 
     <Link to={`/product/${product._id}`}>
