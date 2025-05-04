@@ -6,6 +6,7 @@ import authRoutes from './routes/auth.route.js';
 import routerL from './routes/loginRoutes.js';
 import cors from 'cors';
 import Checkout from './routes/checkoutRoute.js';
+import cartRoutes from './routes/cartRoutes.js';
 dotenv.config(); 
 mongoose
   .connect(process.env.MONGO)
@@ -35,3 +36,4 @@ app.use('/backend/product', productRoutes);
 app.use("/backend/auth", authRoutes);
 app.use("/api", routerL);
 app.use("/api", Checkout);
+app.use('/api', cartRoutes);
