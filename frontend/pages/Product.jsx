@@ -89,7 +89,7 @@ const Product = () => {
         throw new Error(data.error || "Failed to add product");
       }
 
-      navigate('/', { state: { newProduct: { ...formData, image: data.product.image, _id: data.product._id } } });
+      navigate('/products', { state: { newProduct: { ...formData, image: data.product.image, _id: data.product._id } } });
 
 
     } catch (error) {
