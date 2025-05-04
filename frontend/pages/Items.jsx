@@ -102,13 +102,13 @@ const ProductCard = ({ product }) => (
           className="w-32 h-32 object-cover rounded-lg"
         />
       </div>
-      <h3 className="text-xl font-bold text-gray-800 mb-2">{product.productname}</h3>
+      <h3 className="text-xl font-bold text-gray-800 mb-2 text-center">{product.productname}</h3>
       <p className="text-sm text-gray-600 mb-3 line-clamp-3">{product.description}</p>
       <div className="flex justify-between text-sm text-gray-700 font-medium mb-2">
         <span>Category: <span className="font-normal">{product.category}</span></span>
         <span className="text-blue-400">${product.price.toFixed(2)}</span>
       </div>
-      <p className="text-xs text-gray-500">Condition: {product.condition}</p>
+      <p className="text-xs text-gray-500 ">Condition: {product.condition}</p>
       {product.quantity && (
         <p className="text-xs text-gray-500 mt-1">Quantity: {product.quantity}</p>
       )}
@@ -118,7 +118,7 @@ const ProductCard = ({ product }) => (
     </div>
     
     <Link to={`/product/${product._id}`}>
-      <button className="mt-2 bg-gray-300 text-sm text-black hover:bg-gray-400 py-2 px-3 rounded-lg transition duration-20">View Details</button>
+      <button className="mt-2 bg-gray-300 text-sm text-black hover:bg-gray-400 py-2 px-3 rounded-3xl transition duration-20">View Details</button>
     </Link>
   </div>
 );
