@@ -183,7 +183,7 @@ const generateReport = async () => {
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {products.map((product) => (
-          <div key={product._id} className="border rounded-md p-4 bg-white shadow hover:shadow-lg transition">
+          <div key={product._id} className="bg-white border border-gray-200 rounded-md p-4  shadow-sm hover:shadow-lg transition">
             {/* Product Image */}
             {product.image && (
               <div className="mb-3 flex justify-center">
@@ -208,7 +208,7 @@ const generateReport = async () => {
             {product.guidance && (
               <p className="text-gray-500 text-sm italic mt-2">{product.guidance}</p>
             )}
-            <div className="mt-4 flex space-x-2">
+            <div className="mt-4 flex justify-center space-x-2">
               <button
                 className="bg-gray-400 text-white font-semibold py-2 px-6 rounded-3xl shadow hover:bg-gray-500 transition-all duration-200"
                 onClick={() => navigate(`/product/${product._id}`)}
