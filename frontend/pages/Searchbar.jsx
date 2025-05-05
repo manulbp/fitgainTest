@@ -1,4 +1,4 @@
-// SearchBar.jsx
+// EnhancedSearchBar.jsx
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -42,7 +42,7 @@ const Searchbar = () => {
 
     const debounceTimer = setTimeout(() => {
       if (searchQuery) fetchSuggestions();
-    }, 300); 
+    }, 300); // Debounce to avoid excessive API calls
 
     return () => clearTimeout(debounceTimer);
   }, [searchQuery]);
@@ -93,7 +93,7 @@ const Searchbar = () => {
       </button>
       
       {showSuggestions && suggestions.length > 0 && (
-        <div className="absolute z-50 w-64 mt-1 bg-gray-200  border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto left-0">
+        <div className="absolute z-50 w-64 mt-1 bg-gray-300  border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto left-0">
           {loading ? (
             <div className="p-2 text-center text-gray-300 text-sm">Loading...</div>
           ) : (
