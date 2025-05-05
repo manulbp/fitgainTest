@@ -64,7 +64,7 @@ const Home = () => {
       <header className="bg-gradient-to-r from-gray-600 to-gray-700 text-white p-6 rounded-lg shadow mb-8">
         <h1 className="text-3xl font-bold text-center">🏋️‍♂️ Fit-Gain Store</h1>
         <p className="text-center mt-2 text-sm">
-          High-quality gear & supplements to boost your fitness journey
+          <i>High-quality gear & supplements to boost your fitness journey</i>
         </p>
       </header>
 
@@ -120,7 +120,7 @@ const ProductCard = ({ product }) => (
         />
       </div>
       <h3 className="text-xl font-bold text-gray-800 mb-2 text-center">{product.productname}</h3>
-      <p className="text-sm text-gray-600 mb-3 line-clamp-3">{product.description}</p>
+      <p className="text-sm text-gray-600 mb-3 line-clamp-3 ">{product.description}</p>
       <div className="flex justify-between text-sm text-gray-700 font-medium mb-2">
         <span>Category: <span className="font-normal">{product.category}</span></span>
         <span className="text-blue-400">${product.price.toFixed(2)}</span>
