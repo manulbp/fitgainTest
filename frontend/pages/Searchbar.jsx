@@ -123,8 +123,7 @@ const Searchbar = () => {
                   </div>
                   <div className="flex-1 overflow-hidden">
                     <p className="font-medium text-xs truncate">{product.productname}</p>
-                    <p className="text-xs text-gray-500">${parseFloat(product.price).toFixed(2)}</p>
-                  </div>
+                    </div>
                 </li>
               ))}
               <li className="p-2 text-center text-gray-700 hover:bg-gray-200 cursor-pointer border-t border-gray-200">
