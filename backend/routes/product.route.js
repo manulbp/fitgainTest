@@ -6,7 +6,8 @@ import {
   addproducts, 
   getbyId, 
   getAllProducts,
-  uploadMiddleware 
+  uploadMiddleware,
+  updateProductStock 
 } from '../controllers/product.controller.js';
 
 const router = express.Router();
@@ -15,6 +16,7 @@ router.get('/', test);
 router.post('/add', uploadMiddleware, addproducts);
 router.get('/all', getAllProducts);
 router.put('/:pid', uploadMiddleware, updateProduct);
+router.put('/:pid/stock', updateProductStock); 
 router.delete('/:pid', deleteProduct);
 router.get('/:pid', getbyId);
 
