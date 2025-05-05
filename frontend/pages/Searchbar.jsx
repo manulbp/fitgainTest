@@ -127,7 +127,7 @@ const Searchbar = () => {
                   </div>
                 </li>
               ))}
-              <li className="p-2 text-center text-gray-700 hover:bg-gray-100 cursor-pointer border-t border-gray-200">
+              <li className="p-2 text-center text-gray-700 hover:bg-gray-200 cursor-pointer border-t border-gray-200">
                 <button onClick={handleSearch} className="text-xs font-medium">
                   View all results
                 </button>
