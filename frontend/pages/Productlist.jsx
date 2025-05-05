@@ -199,7 +199,7 @@ const generateReport = async () => {
               </div>
             )}
             
-            <h2 className="text-xl font-bold mb-2">{product.productname}</h2>
+            <h2 className="text-xl font-bold mb-2 text-center">{product.productname}</h2>
             <p className="text-gray-600 mb-2">{product.description}</p>
             <p className="text-gray-500 mb-1">Category: {product.category}</p>
             <p className="text-gray-500 mb-1">Condition: {product.condition}</p>
