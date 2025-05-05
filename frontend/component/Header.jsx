@@ -16,7 +16,7 @@ export default function Header() {
     <header className="bg-gray-400 shadow-sm">
       <div className="flex justify-between items-center max-w-6xl mx-auto p-5">
         {/* Logo */}
-        <Link to="/" className="text-3xl font-bold text-gray-800"><i>Fit-Gain</i></Link>
+        <Link to="/" className="text-3xl font-bold text-gray-800"><i>FIT-GAIN</i></Link>
         
         {/* Navigation */}
         <nav className="hidden md:block">
