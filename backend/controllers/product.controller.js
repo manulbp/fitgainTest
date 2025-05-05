@@ -234,3 +234,49 @@ export const getAllProducts = async (req, res) => {
         });
     }
 };
+
+// Add this function to your product.controller.js file
+
+export const updateProductStock = async (req, res) => {
+    const { pid } = req.params;
+    const { quantity } = req.body;
+
+    // Validate product ID
+    if (!mongoose.Types.ObjectId.isValid(pid)) {
+        return res.status(400).json({ success: false, message: "Invalid product ID format" });
+    }
+
+    // Validate quantity
+    if (quantity === undefined || isNaN(parseInt(quantity)) || parseInt(quantity) < 0) {
+        return res.status(400).json({ success: false, message: "Valid quantity is required" });
+    }
+
+    try {
+        // Find and update the product
+        const product = await Product.findById(pid);
+        
+        if (!product) {
+            return res.status(404).json({ success: false, message: "Product not found" });
+        }
+
+        // Update quantity
+        product.quantity = parseInt(quantity);
+        
+        // Save the updated product
+        await product.save();
+        
+        return res.status(200).json({ 
+            success: true, 
+            message: "Stock updated successfully", 
+            product 
+        });
+        
+    } catch (err) {
+        console.error("Error updating product stock:", err);
+        return res.status(500).json({ 
+            success: false, 
+            message: "Server error", 
+            error: err.message 
+        });
+    }
+};
