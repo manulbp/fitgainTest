@@ -1,4 +1,4 @@
-// EnhancedSearchBar.jsx
+// SearchBar.jsx
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -42,7 +42,7 @@ const Searchbar = () => {
 
     const debounceTimer = setTimeout(() => {
       if (searchQuery) fetchSuggestions();
-    }, 300); // Debounce to avoid excessive API calls
+    }, 300); 
 
     return () => clearTimeout(debounceTimer);
   }, [searchQuery]);
