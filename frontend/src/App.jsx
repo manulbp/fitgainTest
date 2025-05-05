@@ -7,7 +7,7 @@ import Product from '../pages/Product';
 import Footer from '../component/Footer';
 import Orders from '../pages/Orders';
 import ProductList from '../pages/Productlist';
-import EditProduct from '../pages/EditProduct';  // Import your new EditProduct page
+import EditProduct from '../pages/EditProduct';  
 import ProductDetail from '../pages/Productdetail';
 import SearchResults from '../pages/SearchResults';
 import Items from '../pages/Items';
