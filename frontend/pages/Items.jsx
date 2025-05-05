@@ -60,7 +60,7 @@ const Items = () => {
       <header className="bg-gradient-to-r from-gray-600 to-gray-700 text-white p-6 rounded-lg shadow mb-8">
         <h1 className="text-3xl font-bold text-center">🏋️‍♂️ All Products</h1>
         <p className="text-center mt-2 text-sm">
-          Browse our complete collection of fitness products
+          <i>Browse our complete collection of fitness products</i>
         </p>
       </header>
 
